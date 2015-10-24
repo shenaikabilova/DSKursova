@@ -1,0 +1,24 @@
+import javax.swing.SwingUtilities;
+
+/**
+ * 
+ */
+
+/**
+ * @author shenaikabilova
+ *
+ */
+
+public class ClassMain {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		//SwingUtilities.invokeLater(new UserInterfaceAddVehicle());
+		
+		Vehicles vehicle = new Vehicles("lorry", "'A3566R'", 2005, "gree", 3, 1526987, 55, 2007-5-15, 2);
+		VehicleDAO v = new VehicleDB();
+		v.update(vehicle);
+	}
+}

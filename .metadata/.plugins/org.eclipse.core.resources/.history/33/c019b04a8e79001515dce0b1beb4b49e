@@ -1,0 +1,7 @@
+public class Vehicles {
+	private String typeVehicle;
+	private String registrationNumber;
+	private int YearVehicle;
+	private String color;
+	
+}

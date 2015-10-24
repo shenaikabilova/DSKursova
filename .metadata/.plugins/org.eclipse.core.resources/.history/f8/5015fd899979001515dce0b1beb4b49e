@@ -1,0 +1,11 @@
+/**
+ * @author shenaikabilova
+ *
+ */
+
+public interface VehicleDAO {
+	public List<Vehicles> listVehicles();
+	public void insert(Vehicles vehicle);
+	public void delete(String regNumber);
+	public void update(String regNumber);
+}

@@ -1,0 +1,11 @@
+/**
+ * @author shenaikabilova
+ *
+ */
+
+public class Drivers {
+	
+	private String driverFirstName;
+	private String driverLastName;
+	private String driverLicense;
+}

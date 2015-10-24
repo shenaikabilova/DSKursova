@@ -1,0 +1,10 @@
+/**
+ * @author shenaikabilova
+ *
+ */
+
+public interface VehicleDAO {
+	public void insert(Vehicles vehicle);
+	public void delete(String regNumber);
+	public void update();
+}

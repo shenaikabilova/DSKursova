@@ -1,0 +1,21 @@
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+
+/**
+ * @author shenaikabilova
+ *
+ */
+
+public class UserInterface extends JFrame implements Runnable, ActionListener{
+	private JButton buttonAddVehice;
+	private JButton buttonAddDriver;
+	private JButton buttonExit;
+	
+	public UserInterface() {
+		setTitle("DS Project");
+		setSize(400, 400);
+	}
+}

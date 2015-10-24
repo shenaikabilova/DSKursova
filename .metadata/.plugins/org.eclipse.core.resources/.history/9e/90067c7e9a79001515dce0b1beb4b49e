@@ -1,0 +1,70 @@
+import java.util.Date;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+
+public class Vehicles {
+	
+	private String typeVehicle;
+	private String registrationNumber;
+	private int YearVehicle;
+	private String color;
+	private int numerOfPlaces;
+	private long km;
+	private int repairCount;
+	private Date lastRerair;
+	
+	public Vehicles() {
+		
+	}
+	public String getTypeVehicle() {
+		return typeVehicle;
+	}
+	public void setTypeVehicle(String typeVehicle) {
+		this.typeVehicle = typeVehicle;
+	}
+	public String getRegistrationNumber() {
+		return registrationNumber;
+	}
+	public void setRegistrationNumber(String registrationNumber) {
+		this.registrationNumber = registrationNumber;
+	}
+	public int getYearVehicle() {
+		return YearVehicle;
+	}
+	public void setYearVehicle(int yearVehicle) {
+		YearVehicle = yearVehicle;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	public int getNumerOfPlaces() {
+		return numerOfPlaces;
+	}
+	public void setNumerOfPlaces(int numerOfPlaces) {
+		this.numerOfPlaces = numerOfPlaces;
+	}
+	public long getKm() {
+		return km;
+	}
+	public void setKm(long km) {
+		this.km = km;
+	}
+	public int getRepairCount() {
+		return repairCount;
+	}
+	public void setRepairCount(int repairCount) {
+		this.repairCount = repairCount;
+	}
+	public Date getLastRerair() {
+		return lastRerair;
+	}
+	public void setLastRerair(Date lastRerair) {
+		this.lastRerair = lastRerair;
+	}
+}

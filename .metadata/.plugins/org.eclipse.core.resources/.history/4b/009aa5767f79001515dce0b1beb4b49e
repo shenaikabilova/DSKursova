@@ -1,0 +1,7 @@
+
+public interface JdbcDao {
+	public void insert();
+	public void delete();
+	public void update();
+	
+}

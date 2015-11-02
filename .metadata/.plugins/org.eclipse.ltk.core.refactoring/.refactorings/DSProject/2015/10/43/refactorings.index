@@ -1,3 +1,5 @@
 1445608945140	Rename type 'JDBSConnection'
 1445608961348	Rename type 'JdbcDao'
 1445614339528	Rename field 'numerOfPlaces'
+1445704057505	Delete element
+1445708739014	Rename type 'DriverDD'

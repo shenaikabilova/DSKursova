@@ -1,0 +1,15 @@
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+
+/**
+ * 
+ */
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class CreateTableVehicles extends JFrame implements Runnable, ActionListener{
+	
+}

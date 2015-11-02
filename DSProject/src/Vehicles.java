@@ -1,3 +1,5 @@
+import java.util.Date;
+
 /**
  * @author shenaikabilova
  *
@@ -10,13 +12,13 @@ public class Vehicles {
 	private int yearVehicle;
 	private String color;
 	private int numberOfPlaces;
-	private long km;
+	private int km;
 	private int repairCount;
-	private long lastRerair;
-	private int driverID;
+	private Date lastRerair;
+	private String driverLicense;
 	
 	public Vehicles (String typeVehicle, String registrationNumber, int yearVehicle,
-			         String color, int numberOfPlaces, long km, int repairCount, long lastRepair, int driverID) {
+			         String color, int numberOfPlaces, int km, int repairCount, Date lastRepair, String driverLicense) {
 		this.typeVehicle = typeVehicle;
 		this.registrationNumber = registrationNumber;
 		this.yearVehicle = yearVehicle;
@@ -25,7 +27,10 @@ public class Vehicles {
 		this.km = km;
 		this.repairCount = repairCount;
 		this.lastRerair = lastRepair;
-		this.driverID = driverID;
+		this.driverLicense = driverLicense;
+	}
+
+	public Vehicles () {
 	}
 
 	public String getTypeVehicle() {
@@ -58,10 +63,10 @@ public class Vehicles {
 	public void setNumerOfPlaces(int numerOfPlaces) {
 		this.numberOfPlaces = numerOfPlaces;
 	}
-	public long getKm() {
+	public int getKm() {
 		return km;
 	}
-	public void setKm(long km) {
+	public void setKm(int km) {
 		this.km = km;
 	}
 	public int getRepairCount() {
@@ -70,18 +75,18 @@ public class Vehicles {
 	public void setRepairCount(int repairCount) {
 		this.repairCount = repairCount;
 	}
-	public long getLastRerair() {
+	public Date getLastRerair() {
 		return lastRerair;
 	}
-	public void setLastRerair(long lastRerair) {
+	public void setLastRerair(Date lastRerair) {
 		this.lastRerair = lastRerair;
 	}
-	
-	public int getDriverID() {
-		return driverID;
+
+	public String getDriverLicense() {
+		return driverLicense;
 	}
 
-	public void setDriverID(int driverID) {
-		this.driverID = driverID;
+	public void setDriverLicense(String driverLicense) {
+		this.driverLicense = driverLicense;
 	}
 }

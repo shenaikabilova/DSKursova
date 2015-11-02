@@ -1,0 +1,13 @@
+import javax.swing.table.AbstractTableModel;
+
+/**
+ * 
+ */
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class TableModelDrivers extends AbstractTableModel {
+	private Object[][] tableDrivers;
+}

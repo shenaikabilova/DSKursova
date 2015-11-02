@@ -1,5 +1,0 @@
-public class Drivers {
-	private String driverFirstName;
-	private String driverLastName;
-	
-}

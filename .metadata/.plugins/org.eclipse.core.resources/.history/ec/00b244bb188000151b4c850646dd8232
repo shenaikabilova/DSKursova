@@ -1,0 +1,40 @@
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.swing.SwingUtilities;
+
+/**
+ * 
+ */
+
+/**
+ * @author shenaikabilova
+ *
+ */
+
+public class ClassMain {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+//		SwingUtilities.invokeLater(new UserInterfaceAddVehicle());
+		
+		int year = 2001;
+		int month = 3;
+		int day = 2;
+		Date date = new Date(year, month, day);
+		Vehicles vehicle = new Vehicles("car", "M3566RR", 2010, "red", 6, 1526987, 55, 2007515, 3);
+//		VehicleDAO v = new VehicleDaoImpl();
+//		v.insert(vehicle);
+//////		
+//////		for(Vehicles vehicles : v.listVehicles()) {
+//////			System.out.println("Vehicle: " + vehicles.getTypeVehicle() + " " + vehicles.getRegistrationNumber() + 
+//////			 " " + vehicles.getYearVehicle() + " " + vehicles.getColor() + " " + vehicles.getNumerOfPlaces() + 
+//////			 " " + vehicles.getKm() + " " + vehicles.getRepairCount() + " " + vehicles.getLastRerair() + " " + vehicles.getDriverID());
+//////		}
+////		
+//		v.update(vehicle);
+//		System.out.println(v.search("A3566RR") + vehicle.getTypeVehicle());
+	}
+}

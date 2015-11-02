@@ -1,2 +1,3 @@
 # DSKursova
-Hello world!
+DS Project
+authors: Shenai Kabilova and Georgi Popov

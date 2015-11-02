@@ -1,3 +1,6 @@
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.swing.SwingUtilities;
 
 /**
@@ -15,17 +18,23 @@ public class ClassMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//SwingUtilities.invokeLater(new UserInterfaceAddVehicle());
+		SwingUtilities.invokeLater(new UserInterfaceAddVehicle());
 		
-		Vehicles vehicle = new Vehicles("car", "'V1234RP'", 2010, "blue", 3, 1526987, 55, 2007-5-15, 6);
-		VehicleDAO v = new VehicleDB();
-		
-//		for(Vehicles vehicles : v.listVehicles()) {
-//			System.out.println("Vehicle: " + vehicles.getTypeVehicle() + " " + vehicles.getRegistrationNumber() + 
-//			 " " + vehicles.getYearVehicle() + " " + vehicles.getColor() + " " + vehicles.getNumerOfPlaces() + 
-//			 " " + vehicles.getKm() + " " + vehicles.getRepairCount() + " " + vehicles.getLastRerair() + " " + vehicles.getDriverID());
-//		}
-		
-		v.update(vehicle);
+//		int year = 2015;
+//		int month = 9;
+//		int day = 31;
+//		Date date = new Date(year-1900, month, day);
+//		
+//		Vehicles vehicle = new Vehicles("car", "A3566RA", 2010, "red", 6, 1526987, 55, date, "C");
+//		VehicleDAO v = new VehicleDaoImpl();
+//		v.insert(vehicle);
+
+//////		for(Vehicles vehicles : v.listVehicles()) {
+//////			System.out.println("Vehicle: " + vehicles.getTypeVehicle() + " " + vehicles.getRegistrationNumber() + 
+//////			 " " + vehicles.getYearVehicle() + " " + vehicles.getColor() + " " + vehicles.getNumerOfPlaces() + 
+//////			 " " + vehicles.getKm() + " " + vehicles.getRepairCount() + " " + vehicles.getLastRerair() + " " + vehicles.getDriverID());
+//////		}
+////		
+//		v.update(vehicle);
 	}
 }

@@ -1,0 +1,54 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+/**
+ * 
+ */
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
+	private JPanel panel;
+	
+	private JLabel labelUsername = new JLabel("Username:");
+	private JLabel labelPassword = new JLabel("Password:");
+	
+	private JTextField textFieldUsername = new JTextField("");
+	private JPasswordField password = new JPasswordField();
+	
+	WelcomeScreen() {
+		setTitle("Admin panel");
+		setSize(300, 300);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		this.panel = new JPanel();
+		panel.setLayout(null);
+		this.getContentPane().add(panel);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		setVisible(true);
+	}
+}

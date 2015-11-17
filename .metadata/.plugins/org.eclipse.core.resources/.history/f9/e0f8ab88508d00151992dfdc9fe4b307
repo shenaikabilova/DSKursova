@@ -1,0 +1,205 @@
+/**
+ * 
+ */
+package GeorgiPopov;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class TripsDaoImpl implements TripsDAO{
+
+	/* (non-Javadoc)
+	 * @see GeorgiPopov.TripsDAO#loadAll()
+	 */
+	@Override
+	public List<Trips> loadAll() {
+		List<Trips> trips;
+		
+		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
+				"DSProject", "password")){
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			final String QUERY = "SELECT TRIP_ID, DRIVER_FIRST_NAME, DRIVER_LAST_NAME, DRIVER_LICENSE, "
+					+ "DRIVER_EGN, VEHICLE_REGISTRATION_NUMBER, START_DATE, END_DATE, KM"
+					+ "FROM TRIPS";
+			final String QUERY_COUNT = "SELECT COUNT(*) as count FROM TRIPS";
+			PreparedStatement prepareStatement = connection.prepareStatement(QUERY);
+			PreparedStatement prepareStatementCount = connection.prepareStatement(QUERY_COUNT);
+			
+			ResultSet resultSet = prepareStatement.executeQuery();
+			ResultSet resultSetCount = prepareStatementCount.executeQuery();
+			
+			resultSetCount.next();
+			int count = resultSetCount.getInt("count");
+			
+			trips = new ArrayList<Trips>(count);
+			
+			while(resultSet.next()) {
+				int tripID = resultSet.getInt("TRIP_ID");
+				String driverFirstName = resultSet.getString("DRIVER_FIRST_NAME");
+				String driverLastName = resultSet.getString("DRIVER_LAST_NAME");
+				String driverLicense = resultSet.getString("DRIVER_LICENSE");
+				String driverEgn = resultSet.getString("DRIVER_EGN");
+				String vehicleRegistrationNumber = resultSet.getString("VEHICLE_REGISTRATION_NUMBER");
+				Date startDate = resultSet.getDate("START_DATE");
+				Date endDate = resultSet.getDate("END_DATE");
+				long km = resultSet.getLong("KM");
+				
+				trips.add(new Trips(tripID, driverFirstName, driverLastName, driverLicense, driverEgn, 
+						            vehicleRegistrationNumber, startDate, endDate, km));
+				
+			}
+			
+			return trips;
+		} catch (Exception exp) {
+			return new ArrayList<Trips>(0);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see GeorgiPopov.TripsDAO#insert(GeorgiPopov.Trips)
+	 */
+	@Override
+	public void insert(Trips trip) {
+		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
+				"DSProject", "password")){
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			final String QUERYDATEFORMAT = "ALTER SESSION SET nls_date_format = 'YYYY-MM-DD HH24:MI'";
+			final String QUERY = "INSERT INTO TRIPS (TRIP_ID, DRIVER_FIRST_NAME, DRIVER_LAST_NAME, DRIVER_LICENSE, "
+					+ "DRIVER_EGN, VEHICLE_REGISTRATION_NUMBER, START_DATE, END_DATE, KM)"
+					+ "VALUES (?,?,?,?,?,?,?,?,?)";
+			
+			Statement statement = connection.createStatement();
+			statement.executeQuery(QUERYDATEFORMAT);
+			
+			PreparedStatement prepareStatementDateFormat = connection.prepareStatement(QUERYDATEFORMAT);
+			prepareStatementDateFormat.executeUpdate();
+			PreparedStatement prepareStatement = connection.prepareStatement(QUERY);
+			
+			prepareStatement.setInt(1, trip.getTripID());
+			prepareStatement.setString(2, trip.getDriverFirstName());
+			prepareStatement.setString(3, trip.getDriverLastName());
+			prepareStatement.setString(4, trip.getDriverLicense());
+			prepareStatement.setString(5, trip.getDriverEgn());
+			prepareStatement.setString(6, trip.getVehicleRegNumber());
+			prepareStatement.setDate(7, new Date(trip.getStartDate().getTime()));
+			prepareStatement.setDate(8, new Date(trip.getEndDate().getTime()));
+			prepareStatement.setLong(9, trip.getKm());
+
+			prepareStatement.executeUpdate();
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see GeorgiPopov.TripsDAO#update(GeorgiPopov.Trips)
+	 */
+	@Override
+	public void update(Trips trip) {
+		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
+				"DSProject", "password")){
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			final String QUERY = "UPDATE TRIPS SET TRIP_ID=?, DRIVER_FIRST_NAME=?, DRIVER_LAST_NAME=?, DRIVER_LICENSE=?, "
+					+ "DRIVER_EGN=?, VEHICLE_REGISTRATION_NUMBER=?, START_DATE=?, END_DATE=?, KM=?"
+					+ "WHERE TRIP_ID=" + trip.getTripID();
+			
+			PreparedStatement prepareStatement = connection.prepareStatement(QUERY);
+			
+			prepareStatement.setInt(1, trip.getTripID());
+			prepareStatement.setString(2, trip.getDriverFirstName());
+			prepareStatement.setString(3, trip.getDriverLastName());
+			prepareStatement.setString(4, trip.getDriverLicense());
+			prepareStatement.setString(5, trip.getDriverEgn());
+			prepareStatement.setString(6, trip.getVehicleRegNumber());
+			prepareStatement.setDate(7, new Date(trip.getStartDate().getTime()));
+			prepareStatement.setDate(8, new Date(trip.getEndDate().getTime()));
+			prepareStatement.setLong(9, trip.getKm());
+			
+			prepareStatement.executeUpdate();
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see GeorgiPopov.TripsDAO#delete(int)
+	 */
+	@Override
+	public void delete(int tripID) {
+		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
+				"DSProject", "password")){
+			
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			final String QUERY = "DELETE FROM TRIPS WHERE TRIP_ID = '" + tripID + "'";
+			
+			PreparedStatement pr = connection.prepareStatement(QUERY);
+			
+			pr.executeUpdate();
+		} catch (ClassNotFoundException e){
+			e.printStackTrace();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see GeorgiPopov.TripsDAO#search(int)
+	 */
+	@Override
+	public Trips search(int tripID) {
+		Trips trip = new Trips();
+		
+		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
+				"DSProject", "password")){
+			
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			final String QUERY = "SELECT TRIP_ID, DRIVER_FIRST_NAME, DRIVER_LAST_NAME, DRIVER_LICENSE, "
+							   + "DRIVER_EGN, VEHICLE_REGISTRATION_NUMBER, START_DATE, END_DATE, KM FROM TRIPS";
+			PreparedStatement prepareStatement = connection.prepareStatement(QUERY);
+			ResultSet resultSet = prepareStatement.executeQuery();
+			
+			if(resultSet.next()){
+				String driverFirstName = resultSet.getString("DRIVER_FIRST_NAME");
+				String driverLastName = resultSet.getString("DRIVER_LAST_NAME");
+				String driverLicense = resultSet.getString("DRIVER_LICENSE");
+				String driverEgn = resultSet.getString("DRIVER_EGN");
+				String vehicleRegistrationNumber = resultSet.getString("VEHICLE_REGISTRATION_NUMBER");
+				Date startDate = resultSet.getDate("START_DATE");
+				Date endDate = resultSet.getDate("END_DATE");
+				long km = resultSet.getLong("KM");
+				
+				trip = new Trips(tripID, driverFirstName, driverLastName, driverLicense, driverEgn, vehicleRegistrationNumber, startDate, endDate, km);
+
+				return trip;
+			} else {
+				throw new SQLException("Data not found!");
+			}
+			
+		}catch (ClassNotFoundException e){
+			e.printStackTrace();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return trip;
+	}
+}

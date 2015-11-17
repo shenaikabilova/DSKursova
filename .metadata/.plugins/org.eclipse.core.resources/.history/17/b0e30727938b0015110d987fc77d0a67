@@ -1,0 +1,24 @@
+/**
+ * 
+ */
+package GeorgiPopov;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class CurrentStateUsername {
+	private String currentUsername;
+
+	publi CurrentStateUsername (String currentUsername){
+		this.currentUsername = currentUsername;
+	}
+	
+	public String getCurrentUsername() {
+		return currentUsername;
+	}
+
+	public void setCurrentUsername(String currentUsername) {
+		this.currentUsername = currentUsername;
+	}
+}

@@ -1,0 +1,18 @@
+/**
+ * 
+ */
+package GeorgiPopov;
+
+import java.util.List;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public interface TripsDAO {
+	public List<Trips> loadAll ();
+	public void add(Trips trip);
+	public int update (int tripID);
+	public int delete (int tripID);
+	public Trips search (int tripID);
+}

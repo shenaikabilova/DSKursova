@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;resutlSetCount&apos; in &apos;ShenaiKabilova.VehicleDaoImpl.searchVehicle(...)&apos; to &apos;resultSetCount&apos;&#x0D;&#x0A;- Original project: &apos;DSProject&apos;&#x0D;&#x0A;- Original element: &apos;ShenaiKabilova.VehicleDaoImpl.searchVehicle(String).resutlSetCount&apos;&#x0D;&#x0A;- Renamed element: &apos;resutlSetCount&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;resutlSetCount&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;ShenaiKabilova{VehicleDaoImpl.java[VehicleDaoImpl~searchVehicle~QString;@resutlSetCount!7688!7751!7698!7711!QResultSet;!0!false" name="resultSetCount" references="true" stamp="1447603943605" version="1.0"/>
+</session>

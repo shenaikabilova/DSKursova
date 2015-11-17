@@ -57,7 +57,7 @@ public class TableModelDrivers extends AbstractTableModel {
 		return tableDrivers[rowIndex][columnIndex];
 	}
 	
-	public String getColumnNameDrivers (int columnIndex) {
+	public String getColumnName(int columnIndex) {
 		return columnNameDrivers[columnIndex];
 	}
 }

@@ -1,0 +1,28 @@
+package Other;
+import javax.swing.SwingUtilities;
+
+/**
+ * 
+ */
+
+/**
+ * @author shenaikabilova
+ *
+ */
+
+public class ClassMain {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new WelcomeScreen());
+		
+		int year = 2015;
+		int month = 9;
+		int day = 31;
+		Date date = new Date(year-1900, month, day);
+		
+
+	}
+}

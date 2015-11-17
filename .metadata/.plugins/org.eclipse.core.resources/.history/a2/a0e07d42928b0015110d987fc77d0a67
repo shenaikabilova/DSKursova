@@ -1,0 +1,14 @@
+/**
+ * 
+ */
+package GeorgiPopov;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class CurrentStateUsername {
+	private String currentUsername;
+	
+	
+}

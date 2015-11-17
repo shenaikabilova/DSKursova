@@ -24,7 +24,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 	private JLabel labelFirstName = new JLabel("First name: ");
 	private JLabel labelLastName = new JLabel("Last name: ");
 	private JLabel labelLicense = new JLabel("License: ");
-	private JLabel labelPassword = new JLabel("Driver ID: ");
+	private JLabel labelPassword = new JLabel("Password: ");
 	private JLabel labelEgn = new JLabel("EGN: ");
 	
 	private JTextField textFieldFirstName = new JTextField("");
@@ -126,7 +126,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 				Drivers addDriver = new Drivers(textFieldFirstName.getText(), textFieldLastName.getText(),
 											   (String) comboBoxLicense.getSelectedItem(), 
 											   	textFieldPassword.getText(),
-											   	Long.parseLong(textFieldEgn.getText()));
+											   	textFieldEgn.getText());
 				driver.insert(addDriver);
 			}
 		});
@@ -137,7 +137,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 				Drivers updateDriver = new Drivers(textFieldFirstName.getText(), textFieldLastName.getText(),
 												   (String) comboBoxLicense.getSelectedItem(), 
 												    textFieldPassword.getText(),
-												    Long.parseLong(textFieldEgn.getText()));
+												    textFieldEgn.getText());
 				driver.update(updateDriver);
 			}
 		});
@@ -145,7 +145,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		buttonDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				driver.delete(Integer.parseInt(textFieldPassword.getText()));
+				driver.delete(textFieldEgn.getText());
 			}
 		});
 		
@@ -160,13 +160,12 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		buttonSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Drivers d = driver.search(Integer.parseInt(textFieldPassword.getText()));
+				Drivers d = driver.search(textFieldEgn.getText());
 				
 				textFieldFirstName.setText(d.getDriverFirstName());
 				textFieldLastName.setText(d.getDriverLastName());
 				comboBoxLicense.setSelectedItem(d.getDriverLicense());
 				textFieldPassword.setText(d.getPassword());
-				textFieldEgn.setText(Long.toString(d.getEgn()));
 			}
 		});
 		

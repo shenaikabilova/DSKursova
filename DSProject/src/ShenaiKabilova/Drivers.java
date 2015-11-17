@@ -10,9 +10,9 @@ public class Drivers {
 	private String driverFirstName;
 	private String driverLastName;
 	private String driverLicense;
-	private long egn;
+	private String egn;
 	
-	public Drivers (String driverFirstName, String driverLastName, String driverLicense, String password, long egn) {
+	public Drivers (String driverFirstName, String driverLastName, String driverLicense, String password, String egn) {
 		this.driverFirstName = driverFirstName;
 		this.driverLastName = driverLastName;
 		this.driverLicense = driverLicense;
@@ -50,11 +50,11 @@ public class Drivers {
 		this.password = password;
 	}
 
-	public long getEgn() {
+	public String getEgn() {
 		return egn;
 	}
 
-	public void setEgn(long egn) {
+	public void setEgn(String egn) {
 		this.egn = egn;
 	}
 }

@@ -46,7 +46,7 @@ public class DriverDaoImpl implements DriverDAO {
 				String driverLastName = resultSet.getString("DRIVER_LAST_NAME");
 				String driverLicense = resultSet.getString("DRIVER_LICENSE");
 				String password = resultSet.getString("PASSWORD");
-				long driverEGN = resultSet.getLong("DRIVER_EGN");
+				String driverEGN = resultSet.getString("DRIVER_EGN");
 				
 				drivers.add(new Drivers(driverFirstName, driverLastName, driverLicense, password, driverEGN));
 			}
@@ -76,7 +76,7 @@ public class DriverDaoImpl implements DriverDAO {
 			pr.setString(2, driver.getDriverLastName());
 			pr.setString(3, driver.getDriverLicense());
 			pr.setString(4, driver.getPassword());
-			pr.setLong(5, driver.getEgn());
+			pr.setString(5, driver.getEgn());
 			
 			pr.executeUpdate();
 		} catch (ClassNotFoundException e) {
@@ -90,7 +90,7 @@ public class DriverDaoImpl implements DriverDAO {
 	 * @see DriverDAO#delete(int)
 	 */
 	@Override
-	public void delete(long driverEgn) {
+	public void delete(String driverEgn) {
 		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
 				"DSProject", "password")){
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -122,7 +122,7 @@ public class DriverDaoImpl implements DriverDAO {
 			pr.setString(1, driver.getDriverFirstName());
 			pr.setString(2, driver.getDriverLastName());
 			pr.setString(3, driver.getDriverLicense());
-			pr.setLong(5, driver.getEgn());
+			pr.setString(5, driver.getEgn());
 			
 			pr.executeUpdate();
 					
@@ -137,14 +137,13 @@ public class DriverDaoImpl implements DriverDAO {
 	 * @see DriverDAO#search(int)
 	 */
 	@Override
-	public Drivers search(long driverEgn) {
+	public Drivers search(String driverEgn) {
 		Drivers driver = new Drivers();
 		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
 				"DSProject", "password")){
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			final String QUERY = "SELECT DRIVER_FIRST_NAME, DRIVER_LAST_NAME, DRIVER_LICENSE, PASSWORD"
-					+ "FROM DRIVERS WHERE DRIVER_EGN = '" + driverEgn + "'";
+			final String QUERY = "SELECT DRIVER_FIRST_NAME, DRIVER_LAST_NAME, DRIVER_LICENSE, PASSWORD FROM DRIVERS WHERE DRIVER_EGN = '" + driverEgn + "'";
 			
 			PreparedStatement pr = connection.prepareStatement(QUERY);
 			ResultSet resultSet = pr.executeQuery();
@@ -165,5 +164,27 @@ public class DriverDaoImpl implements DriverDAO {
 			e.printStackTrace();
 		}
 		return driver;
+	}
+	
+	public String checkUser(String driverEgn){
+		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
+				"DSProject", "password")){
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		
+			final String QUERY = "SELECT PASSWORD FROM DRIVERS WHERE DRIVER_EGN = '" + driverEgn + "'";
+			PreparedStatement pr = connection.prepareStatement(QUERY);
+			ResultSet rs = pr.executeQuery();
+			
+			if(rs.next()){
+				String pass = rs.getString("PASSWORD");
+				
+				return pass;
+			}
+		} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+		}catch (SQLException e) {
+				e.printStackTrace();
+		}
+		return null;
 	}
 }

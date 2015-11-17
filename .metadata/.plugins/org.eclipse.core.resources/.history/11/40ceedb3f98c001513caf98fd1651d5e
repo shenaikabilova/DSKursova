@@ -1,0 +1,28 @@
+package Other;
+import java.util.Date;
+
+import javax.swing.SwingUtilities;
+
+import GeorgiPopov.Trips;
+
+/**
+ * 
+ */
+
+/**
+ * @author shenaikabilova
+ *
+ */
+
+public class ClassMain {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new WelcomeScreen());
+		
+		Date date = new Date(2015-1900, 11, 17, 9, 5);
+		Trips trip = new Trips(5, "Shenai", "Kabilova", "B", 9312250000, ", startDate, endDate, km)
+	}
+}

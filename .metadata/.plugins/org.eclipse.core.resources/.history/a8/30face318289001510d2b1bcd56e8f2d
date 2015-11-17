@@ -1,0 +1,38 @@
+/**
+ * 
+ */
+package GeorgiPopov;
+
+import java.util.Date;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class Trips {
+	private String driverFirstName;
+	private String driverLastName;
+	private String driverLicense;
+	private String driverEgn;
+	private String vehicleRegNumber;
+	private Date startDate;
+	private Date endDate;
+	private long km;
+	
+	public Trips(){
+	}
+	
+	public Trips (String driverFirstName, String driverLastName, String driverLicense, String driverEgn, 
+				  String vehicleRegNumber, Date startDate, Date endDate, long km) {
+		this.driverFirstName = driverFirstName;
+		this.driverLastName = driverLastName;
+		this.driverLicense = driverLicense;
+		this.driverEgn = driverEgn;
+		this.vehicleRegNumber = vehicleRegNumber;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.km = km;
+	}
+	
+	
+}

@@ -1,0 +1,16 @@
+/**
+ * 
+ */
+package GeorgiPopov;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class Trips {
+	private String driverFirstName;
+	private String driverLastName;
+	private String driverLicense;
+	private String driverEgn;
+	
+}

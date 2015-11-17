@@ -255,7 +255,7 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		buttonViewTable.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				//dispose();
 				new CreateTableVehicles().setVisible(true);
 			}
 		});

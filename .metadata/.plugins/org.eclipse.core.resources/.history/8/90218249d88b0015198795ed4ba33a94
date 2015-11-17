@@ -1,0 +1,45 @@
+/**
+ * 
+ */
+package GeorgiPopov;
+
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class CreateTableTrips extends JFrame implements Runnable, ActionListener{
+	private JTable tableTrip;
+	
+	public CreateTableTrips () {
+		Frame frame = new Frame("Trips");
+		
+		TripsDAO trips = new TripsDaoImpl();
+		AbstractTableModel tableModel = new TableModelTrips(trips);
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		setVisible(true);
+	}
+}

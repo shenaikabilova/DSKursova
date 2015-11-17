@@ -12,4 +12,5 @@ public interface VehicleDAO {
 	public void delete(String regNumber);
 	public void update(Vehicles vehicle);
 	public Vehicles search(String regNumber);
+	public List<String> searchVehicle (String license);
 }

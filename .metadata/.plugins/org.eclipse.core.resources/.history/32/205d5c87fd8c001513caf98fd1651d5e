@@ -1,0 +1,37 @@
+package Other;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.swing.SwingUtilities;
+
+import GeorgiPopov.Trips;
+import GeorgiPopov.TripsDAO;
+import GeorgiPopov.TripsDaoImpl;
+
+/**
+ * 
+ */
+
+/**
+ * @author shenaikabilova
+ *
+ */
+
+public class ClassMain {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+	//	SwingUtilities.invokeLater(new WelcomeScreen());
+		
+		Date date = new Date(2015-1900, 11-1, 17, 9, 5);
+		System.out.println(date);
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		System.out.println(dateFormat.format(date));
+//		Trips trip = new Trips(6, "Shenai", "Kabilova", "B", "9312250000", "A5555B", dateF, date, 20);
+//		TripsDAO dao = new TripsDaoImpl();
+//		dao.insert(trip);
+	}
+}

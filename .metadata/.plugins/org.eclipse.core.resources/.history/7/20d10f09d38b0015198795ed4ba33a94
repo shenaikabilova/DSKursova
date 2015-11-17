@@ -1,0 +1,42 @@
+/**
+ * 
+ */
+package GeorgiPopov;
+
+import javax.swing.table.AbstractTableModel;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class TableModelTrips extends AbstractTableModel {
+	private String[] columnName = {"TRIP_ID", "DRIVER_FIRST_NAME", "DRIVER_LAST_NAME", "DRIVER_LICENSE", 
+								   "DRIVER_EGN", "VEHICLE_REGISTRATION_NUMBER", "START_DATE", "END_DATE", "KM"};
+	private Object[][] tableTrip;
+	
+	public String getColumnName (int col) {
+		return columnName[col].toString();
+	}
+	
+	/* (non-Javadoc)
+	 * @see javax.swing.table.TableModel#getColumnCount()
+	 */
+	@Override
+	public int getColumnCount() {
+		return tableTrip.length;
+	}
+	/* (non-Javadoc)
+	 * @see javax.swing.table.TableModel#getRowCount()
+	 */
+	@Override
+	public int getRowCount() {
+		return columnName.length;
+	}
+	/* (non-Javadoc)
+	 * @see javax.swing.table.TableModel#getValueAt(int, int)
+	 */
+	@Override
+	public Object getValueAt(int arg0, int arg1) {
+		return tableTrip[arg0][arg1];
+	}
+}

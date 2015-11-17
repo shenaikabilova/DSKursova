@@ -1,0 +1,24 @@
+package Other;
+
+import javax.swing.SwingUtilities;
+
+import GeorgiPopov.UserInterfaceTrips;
+
+/**
+ * 
+ */
+
+/**
+ * @author shenaikabilova
+ *
+ */
+
+public class ClassMain {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new UserInterfaceTrips());
+	}
+}

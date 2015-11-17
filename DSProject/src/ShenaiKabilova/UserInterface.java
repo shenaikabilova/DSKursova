@@ -6,6 +6,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Other.WelcomeScreen;
+
 
 /**
  * @author shenaikabilova
@@ -63,6 +65,14 @@ public class UserInterface extends JFrame implements Runnable, ActionListener{
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 				new UserInterfaceAddDriver().setVisible(true);
+			}
+		});
+		
+		buttonExit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new WelcomeScreen().setVisible(true);;
 			}
 		});
 	}

@@ -11,7 +11,7 @@ public class Validate {
 	public boolean isvalidEGN (String egn) throws Exception{
 		int[] weights = { 2, 4, 8, 5, 10, 9, 7, 3, 6 };
 
-		 int year = Integer.parseInt(egn.substring(0,2));
+	 int year = Integer.parseInt(egn.substring(0,2));
          int month = Integer.parseInt(egn.substring(2,4));
          int day = Integer.parseInt(egn.substring(4, 6));
          int checkSum  = 0;

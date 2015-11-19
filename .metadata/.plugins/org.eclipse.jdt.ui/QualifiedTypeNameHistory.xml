@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="Vehicles"/>
-<fullyQualifiedTypeName name="Drivers"/>
-<fullyQualifiedTypeName name="VehicleDAO"/>
-<fullyQualifiedTypeName name="VehicleDaoImpl"/>
-<fullyQualifiedTypeName name="TableModel"/>
-<fullyQualifiedTypeName name="DriverDAO"/>
-<fullyQualifiedTypeName name="DriverDaoImpl"/>
 <fullyQualifiedTypeName name="CreateTableVehicles"/>
 <fullyQualifiedTypeName name="CreateTableDrivers"/>
 <fullyQualifiedTypeName name="TableModelDrivers"/>
@@ -17,12 +10,9 @@
 <fullyQualifiedTypeName name="WelcomeScreen"/>
 <fullyQualifiedTypeName name="UserInterface"/>
 <fullyQualifiedTypeName name="ShenaiKabilova.UserInterface"/>
-<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="Other.ClassMain"/>
 <fullyQualifiedTypeName name="ShenaiKabilova.Drivers"/>
 <fullyQualifiedTypeName name="javax.swing.JDialog"/>
-<fullyQualifiedTypeName name="java.sql.SQLException"/>
-<fullyQualifiedTypeName name="GeorgiPopov.UserInterfaceTrips"/>
 <fullyQualifiedTypeName name="javax.swing.JLabel"/>
 <fullyQualifiedTypeName name="javax.swing.JTextField"/>
 <fullyQualifiedTypeName name="java.lang.Long"/>
@@ -31,7 +21,6 @@
 <fullyQualifiedTypeName name="GeorgiPopov.CurrentStateUsername"/>
 <fullyQualifiedTypeName name="ShenaiKabilova.DriverDAO"/>
 <fullyQualifiedTypeName name="ShenaiKabilova.DriverDaoImpl"/>
-<fullyQualifiedTypeName name="java.sql.ResultSet"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="javax.swing.JComboBox"/>
 <fullyQualifiedTypeName name="javax.swing.JFrame"/>
@@ -41,23 +30,34 @@
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.lang.Object"/>
 <fullyQualifiedTypeName name="java.awt.Frame"/>
-<fullyQualifiedTypeName name="ShenaiKabilova.VehicleDAO"/>
-<fullyQualifiedTypeName name="ShenaiKabilova.VehicleDaoImpl"/>
 <fullyQualifiedTypeName name="javax.swing.table.AbstractTableModel"/>
 <fullyQualifiedTypeName name="GeorgiPopov.TableModelTrips"/>
 <fullyQualifiedTypeName name="javax.swing.JTable"/>
 <fullyQualifiedTypeName name="GeorgiPopov.CreateTableTrips"/>
 <fullyQualifiedTypeName name="javax.swing.JScrollPane"/>
-<fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="java.util.Calendar"/>
 <fullyQualifiedTypeName name="java.time.Year"/>
 <fullyQualifiedTypeName name="java.sql.Date"/>
 <fullyQualifiedTypeName name="javax.xml.stream.events.StartDocument"/>
-<fullyQualifiedTypeName name="GeorgiPopov.Trips"/>
-<fullyQualifiedTypeName name="GeorgiPopov.TripsDAO"/>
-<fullyQualifiedTypeName name="GeorgiPopov.TripsDaoImpl"/>
-<fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.text.DateFormat"/>
+<fullyQualifiedTypeName name="GeorgiPopov.UserInterfaceTrips"/>
+<fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+<fullyQualifiedTypeName name="java.sql.Statement"/>
 <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
+<fullyQualifiedTypeName name="java.sql.Timestamp"/>
+<fullyQualifiedTypeName name="GeorgiPopov.TripsDAO"/>
+<fullyQualifiedTypeName name="GeorgiPopov.TripsDaoImpl"/>
+<fullyQualifiedTypeName name="ShenaiKabilova.VehicleDAO"/>
+<fullyQualifiedTypeName name="ShenaiKabilova.VehicleDaoImpl"/>
+<fullyQualifiedTypeName name="ShenaiKabilova.Vehicles"/>
+<fullyQualifiedTypeName name="GeorgiPopov.Trips"/>
+<fullyQualifiedTypeName name="java.sql.ResultSet"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="java.util.logging.ErrorManager"/>
+<fullyQualifiedTypeName name="Other.Validate"/>
+<fullyQualifiedTypeName name="java.sql.SQLException"/>
+<fullyQualifiedTypeName name="java.lang.Exception"/>
+<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 </qualifiedTypeNameHistroy>

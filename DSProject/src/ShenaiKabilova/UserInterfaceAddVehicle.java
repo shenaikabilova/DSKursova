@@ -7,8 +7,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import Other.Validate;
 
 /**
  * 
@@ -190,17 +193,23 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 								     (int)comboBoxMonths.getSelectedItem()-1, 
 								     (int)comboBoxDays.getSelectedItem());
 				
-				Vehicles addVehicle = new Vehicles(textFieldTypeVehicle.getText(),
-												   textFieldRegNumber.getText(),
-												   Integer.parseInt(textFieldYearVehicle.getText()),
-												   textFieldColor.getText(),
-												   Integer.parseInt(textFieldNumberPlaces.getText()),
-												   Integer.parseInt(textFieldKM.getText()),
-												   Integer.parseInt(textFieldRepairCount.getText()),
-												   date,
-												   (String) comboboxLicense.getSelectedItem());
-				
-				vehicle.insert(addVehicle);
+				if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText()) == false ){
+					JOptionPane.showMessageDialog(null, "Invalid reg number", "Wrong registracion number", 
+							JOptionPane.ERROR_MESSAGE);
+				}
+				else{
+					Vehicles addVehicle = new Vehicles(textFieldTypeVehicle.getText(),
+													   textFieldRegNumber.getText(),
+													   Integer.parseInt(textFieldYearVehicle.getText()),
+													   textFieldColor.getText(),
+													   Integer.parseInt(textFieldNumberPlaces.getText()),
+													   Integer.parseInt(textFieldKM.getText()),
+													   Integer.parseInt(textFieldRepairCount.getText()),
+													   date,
+													   (String) comboboxLicense.getSelectedItem());
+					
+					vehicle.insert(addVehicle);
+				}
 			}
 		});
 		

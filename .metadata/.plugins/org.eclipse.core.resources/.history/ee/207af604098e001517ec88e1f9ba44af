@@ -1,0 +1,64 @@
+/**
+ * 
+ */
+package Other;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class Validate {
+	public boolean validateEGN (String egn) throws Exception{
+		int[] weights = { 2, 4, 8, 5, 10, 9, 7, 3, 6 };
+
+		 int year = Integer.parseInt(egn.substring(0,2));
+         int month = Integer.parseInt(egn.substring(2,4));
+         int day = Integer.parseInt(egn.substring(4, 6));
+         int num = Integer.parseInt(egn.substring(6, 9));
+         int checkSum  = 0;
+         
+         if(egn.length() != 10) {
+                 throw new Exception("EGN must be with 10 lenght!");
+         }
+         try {
+                 Long.parseLong(egn);
+         } catch (NumberFormatException ex) {   
+                 throw new Exception("EGN should contain only numbers!");
+         }
+         
+         System.out.println("year: " + year);
+         if(year < 0 || year > 99) {
+                 throw new Exception("Expected year between 00..99");
+         }
+         
+//         System.out.println("month before adjustment: " + month);
+         if(month > 20 && month < 40) {
+                 month -= 20;
+         } else if(month > 40) {
+                 month -=40;                     
+         }
+//         System.out.println("month: " + month);
+         if (month < 1 || month > 12) {
+                 System.out.println("Month should be between 1..12,  actual:" + month);
+                 return false;
+         }
+         
+         System.out.println("day: " + day);
+         if(day < 1 || day > 31) {
+                 return false;
+         }
+         
+         System.out.println("number of birth: " + num);
+         for(int i = 0; i < egn.length() - 1; i++) {
+                 checkSum += (int)(egn.charAt(i) - '0')*weights[i];
+         }
+         checkSum %= 11;
+         System.out.println("Checksum: " + checkSum);
+         if(checkSum != (int)(egn.charAt(9) - '0')) {
+                 System.out.println("Checksum not correct expected " + (int)(egn.charAt(9) - '0') + " actual " + checkSum);
+                 return false;
+         }
+         System.out.println("EGN is valid!");
+         return true;
+	}
+}

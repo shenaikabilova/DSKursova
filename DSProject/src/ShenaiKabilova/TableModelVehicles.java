@@ -15,7 +15,7 @@ import javax.swing.table.AbstractTableModel;
 public class TableModelVehicles extends AbstractTableModel {
 	private Object[][] tableVehicles;
 	private String[] columnNameVehicles = {"TYPE_VEHICLE", "REGISTRATION_NUMBER", "YEAR_VEHICLE", "COLOR", 
-														"NUMBER_PLACES", "KM", "REPAIR_COUNT", "LAST_REPAIR", "LICENSE"};
+										   "NUMBER_PLACES", "KM", "REPAIR_COUNT", "LAST_REPAIR", "LICENSE"};
 	
 	public TableModelVehicles (VehicleDAO dao) {
 		List<Vehicles> vehicles = dao.listVehicles();

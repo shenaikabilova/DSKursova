@@ -333,13 +333,13 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 				textFieldKM.setText(Long.toString((trip.getKm())));
 				comboBoxRegNumber.setSelectedItem(trip.getVehicleRegNumber());
 				
-				comboBoxStartDay.setSelectedItem(trip.getStartDate().getDay());
+				comboBoxStartDay.setSelectedItem(trip.getStartDate().getDate());
 				comboBoxStartMonth.setSelectedItem(trip.getStartDate().getMonth()+1);
 				comboBoxStartYear.setSelectedItem(trip.getStartDate().getYear()+1900);
 				comboBoxStartHour.setSelectedItem(trip.getStartDate().getHours());
 				comboBoxStartMinute.setSelectedItem(trip.getStartDate().getMinutes());
 				
-				comboBoxEndDay.setSelectedItem(trip.getEndDate().getDay());
+				comboBoxEndDay.setSelectedItem(trip.getEndDate().getDate());
 				comboBoxEndMonth.setSelectedItem(trip.getEndDate().getMonth()+1);
 				comboBoxEndYear.setSelectedItem(trip.getEndDate().getYear()+1900);
 				comboBoxEndHour.setSelectedItem(trip.getEndDate().getHours());
@@ -359,6 +359,7 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 			public void actionPerformed(ActionEvent e) {
 				comboBoxRegNumber.setSelectedItem(1);
 				textFieldKM.setText("");
+				textFieldTripID.setText("");
 				comboBoxStartDay.setSelectedItem(1);
 				comboBoxStartMonth.setSelectedItem(1);
 				comboBoxStartYear.setSelectedItem(1);

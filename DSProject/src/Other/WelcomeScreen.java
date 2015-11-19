@@ -54,6 +54,7 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 		panel.add(labelPassword);
 		
 		this.textFieldUsername.setBounds(100, 30, 100, 25);
+		
 		panel.add(textFieldUsername);
 		
 		this.password.setBounds(100, 60, 100, 25);

@@ -37,8 +37,7 @@ public class CreateTableTrips extends JFrame implements Runnable, ActionListener
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 
 	/* (non-Javadoc)

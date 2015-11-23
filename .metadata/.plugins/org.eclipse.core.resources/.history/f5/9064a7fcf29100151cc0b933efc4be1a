@@ -1,0 +1,15 @@
+/**
+ * 
+ */
+package Other;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class EGNNotCorrectException extends Exception{
+	
+	public EGNNotCorrectException(String message){
+		super(message);
+	}
+}

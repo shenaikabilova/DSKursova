@@ -1,6 +1,7 @@
 package ShenaiKabilova;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Year;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -47,18 +48,11 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 	private JTextField textFieldRepairCount = new JTextField("");
 	
 	private String[] license = {"A", "B", "C", "D", "BE", "CE", "DE", "T", "A"};
-	private Integer[] days = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-							  22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
-	private Integer[] months = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-	private Integer[] years = {1993, 1994, 1995, 1996, 1997, 1998, 2000,
-							   2001, 2002, 2003, 2004, 2005, 2006, 2007,
-							   2008, 2009, 2010, 2011, 2012, 2013, 2014,
-							   2015};
-	
+
 	private JComboBox<String> comboboxLicense = new JComboBox<String>(license);
-	private JComboBox<Integer> comboBoxDays = new JComboBox<Integer>(days);
-	private JComboBox<Integer> comboBoxMonths = new JComboBox<Integer>(months);
-	private JComboBox<Integer> comboBoxYears = new JComboBox<Integer>(years);
+	private JComboBox<Integer> comboBoxDays = new JComboBox<Integer>();
+	private JComboBox<Integer> comboBoxMonths = new JComboBox<Integer>();
+	private JComboBox<Integer> comboBoxYears = new JComboBox<Integer>();
 	
 	private JButton buttonCreate = new JButton("Create");
 	private JButton buttonDelete = new JButton("Delete");
@@ -141,12 +135,21 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		panel.add(comboboxLicense);
 		
 		this.comboBoxDays.setBounds(150, 290, 50, 20);
+		for(int i=1; i<=31;i++) {
+			comboBoxDays.addItem(i);
+		}
 		panel.add(comboBoxDays);
 		
 		this.comboBoxMonths.setBounds(210, 290, 50, 20);
+		for(int i=1; i<=12; i++) {
+			comboBoxMonths.addItem(i);
+		}
 		panel.add(comboBoxMonths);
 		
 		this.comboBoxYears.setBounds(270, 290, 60, 20);
+		for(int i=Year.now().getValue()-20; i<(Year.now().getValue())+20; i++){
+			comboBoxYears.addItem(i);
+		}
 		panel.add(comboBoxYears);
 		
 		this.buttonCreate.setBounds(400, 20, 100, 30);
@@ -184,20 +187,16 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
 		buttonCreate.addActionListener(new ActionListener() {	
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Date date = new Date((int)comboBoxYears.getSelectedItem()-1900, 
-								     (int)comboBoxMonths.getSelectedItem()-1, 
-								     (int)comboBoxDays.getSelectedItem());
-				
-				if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText()) == false ){
-					JOptionPane.showMessageDialog(null, "Invalid reg number", "Wrong registracion number", 
-							JOptionPane.ERROR_MESSAGE);
-				}
-				else{
+				try{
+					Date date = new Date((int)comboBoxYears.getSelectedItem()-1900, 
+									     (int)comboBoxMonths.getSelectedItem()-1, 
+									     (int)comboBoxDays.getSelectedItem());
+					
+					
 					Vehicles addVehicle = new Vehicles(textFieldTypeVehicle.getText(),
 													   textFieldRegNumber.getText(),
 													   Integer.parseInt(textFieldYearVehicle.getText()),
@@ -207,8 +206,18 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 													   Integer.parseInt(textFieldRepairCount.getText()),
 													   date,
 													   (String) comboboxLicense.getSelectedItem());
-					
+						
+					if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText()) == false ){
+						JOptionPane.showMessageDialog(null, "Invalid registration number of vehicle", 
+								"Wrong registracion number", JOptionPane.ERROR_MESSAGE);
+					}
+						
 					vehicle.insert(addVehicle);
+						
+					JOptionPane.showMessageDialog(null, "Add - success", "Correct", JOptionPane.OK_OPTION);
+					
+				}catch(Throwable exc){
+					JOptionPane.showMessageDialog(null, exc.getMessage(),"Exception", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -221,17 +230,22 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 									 (int)comboBoxMonths.getSelectedItem()-1, 
 									 (int)comboBoxDays.getSelectedItem());
 		
-				Vehicles updateVehicle = new Vehicles(textFieldTypeVehicle.getText(),
-													  textFieldRegNumber.getText(),
-													  Integer.parseInt(textFieldYearVehicle.getText()),
-													  textFieldColor.getText(),
-													  Integer.parseInt(textFieldNumberPlaces.getText()),
-													  Integer.parseInt(textFieldKM.getText()),
-													  Integer.parseInt(textFieldRepairCount.getText()),
-													  date,
-													 (String) comboboxLicense.getSelectedItem());
-
-				vehicle.update(updateVehicle);
+				if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText()) == false ){
+					JOptionPane.showMessageDialog(null, "Invalid reg number", "Wrong registracion number", 
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					Vehicles updateVehicle = new Vehicles(textFieldTypeVehicle.getText(),
+														  textFieldRegNumber.getText(),
+														  Integer.parseInt(textFieldYearVehicle.getText()),
+														  textFieldColor.getText(),
+														  Integer.parseInt(textFieldNumberPlaces.getText()),
+														  Integer.parseInt(textFieldKM.getText()),
+														  Integer.parseInt(textFieldRepairCount.getText()),
+														  date,
+														 (String) comboboxLicense.getSelectedItem());
+	
+					vehicle.update(updateVehicle);
+				}
 			}
 		});
 		
@@ -239,6 +253,7 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				vehicle.delete(textFieldRegNumber.getText());
+				JOptionPane.showMessageDialog(null, "Delete - success", "Correct", JOptionPane.OK_OPTION);
 			}
 		});
 		
@@ -264,7 +279,6 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		buttonViewTable.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//dispose();
 				new CreateTableVehicles().setVisible(true);
 			}
 		});

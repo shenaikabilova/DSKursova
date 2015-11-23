@@ -1,4 +1,6 @@
 package ShenaiKabilova;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
 
 public interface VehicleDAO {
 	public List<Vehicles> listVehicles();
-	public void insert(Vehicles vehicle);
+	public void insert(Vehicles vehicle) throws SQLIntegrityConstraintViolationException, SQLException;
 	public void delete(String regNumber);
 	public void update(Vehicles vehicle);
 	public Vehicles search(String regNumber);

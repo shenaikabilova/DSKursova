@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class VehicleDaoImpl implements VehicleDAO{
 	@Override
-	public void insert(Vehicles vehicle) {
+	public void insert(Vehicles vehicle) throws SQLIntegrityConstraintViolationException, SQLException {
 		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
 				"DSProject", "password")) {
 			
@@ -49,8 +50,10 @@ public class VehicleDaoImpl implements VehicleDAO{
 			connection.close();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} catch (SQLIntegrityConstraintViolationException e) {
+			throw new SQLIntegrityConstraintViolationException("Unique value to EGN");
 		}catch (SQLException e) {
-			e.printStackTrace();
+			throw new SQLException("Could not add new driver");
 		}
 	}
 

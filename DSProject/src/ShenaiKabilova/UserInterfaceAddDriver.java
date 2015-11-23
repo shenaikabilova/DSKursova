@@ -1,7 +1,11 @@
 package ShenaiKabilova;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -22,7 +26,7 @@ import Other.Validate;
  *
  */
 @SuppressWarnings("serial")
-public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionListener{
+public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionListener, FocusListener {
 	private JPanel panel;
 	
 	private JLabel labelFirstName = new JLabel("First name: ");
@@ -87,9 +91,6 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		panel.add(textFieldPassword);
 		
 		this.textFieldEgn.setBounds(100, 140, 150, 25);
-		if(textFieldEgn.getText().length()!=10){
-			//textFieldEgn.
-		}
 		panel.add(textFieldEgn);
 		
 		this.buttonInsert.setBounds(280, 20, 100, 30);
@@ -113,6 +114,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		this.buttonExit.setBounds(280, 260, 100, 30);
 		panel.add(buttonExit);
 		
+		textFieldEgn.addFocusListener(this);
 		buttonInsert.addActionListener(this);
 		buttonUpdate.addActionListener(this);
 		buttonDelete.addActionListener(this);
@@ -130,17 +132,24 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		buttonInsert.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				if(new Validate().isvalidEGN(textFieldEgn.getText()) == false) throw new Exception(){
-//						JOptionPane.showMessageDialog(null, "Error" + new SQLException(), "Wrong EGN!", JOptionPane.ERROR_MESSAGE);
-//				}
-//				else{
-					Drivers addDriver = new Drivers(textFieldFirstName.getText(), textFieldLastName.getText(),
-													   (String) comboBoxLicense.getSelectedItem(), 
-												   	    textFieldPassword.getText(),
-												   	    textFieldEgn.getText());
+				Drivers addDriver = new Drivers(textFieldFirstName.getText(), 
+												textFieldLastName.getText(),
+												(String) comboBoxLicense.getSelectedItem(), 
+												textFieldPassword.getText(),
+												textFieldEgn.getText());
+
+				try {
+					if(new Validate().isvalidEGN(textFieldEgn.getText())==true);
+					driver.insert(addDriver);
 					
-						driver.insert(addDriver);
-//				}
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Add - success!");
+				} catch (SQLIntegrityConstraintViolationException e1) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+				}
 			}
 		});
 		
@@ -152,6 +161,8 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 												    textFieldPassword.getText(),
 												    textFieldEgn.getText());
 				driver.update(updateDriver);
+				
+				JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Update - success!");
 			}
 		});
 		
@@ -159,13 +170,13 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				driver.delete(textFieldEgn.getText());
+				JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Delete - success!");
 			}
 		});
 		
 		buttonViewTable.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();
 				new CreateTableDrivers().setVisible(true);
 			}
 		});
@@ -208,5 +219,25 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 	@Override
 	public void run() {
 		setVisible(true);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+	 */
+	@Override
+	public void focusGained(FocusEvent e) {
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+	 */
+	@Override
+	public void focusLost(FocusEvent e) {
+		try {
+			if(new Validate().isvalidEGN(textFieldEgn.getText())==true);
+		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+		}
 	}
 }

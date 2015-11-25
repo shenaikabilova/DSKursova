@@ -14,6 +14,7 @@ import GeorgiPopov.CurrentStateUsername;
 import GeorgiPopov.UserInterfaceTrips;
 import ShenaiKabilova.DriverDAO;
 import ShenaiKabilova.DriverDaoImpl;
+import ShenaiKabilova.DriverErrorException;
 import ShenaiKabilova.UserInterface;
 
 /**
@@ -42,6 +43,7 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 		setSize(300, 300);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 		
 		this.panel = new JPanel();
 		panel.setLayout(null);
@@ -54,7 +56,6 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 		panel.add(labelPassword);
 		
 		this.textFieldUsername.setBounds(100, 30, 100, 25);
-		
 		panel.add(textFieldUsername);
 		
 		this.password.setBounds(100, 60, 100, 25);
@@ -67,6 +68,7 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 		panel.add(buttonExit);
 		
 		buttonEnter.addActionListener(this);
+		buttonExit.addActionListener(this);
 	}
 
 	/* (non-Javadoc)
@@ -89,12 +91,23 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 					dispose();
 					CurrentStateUsername current = new CurrentStateUsername();
 					current.setCurrentUsername(textFieldUsername.getText());
-					new UserInterfaceTrips().setVisible(true);
+					try {
+						new UserInterfaceTrips().setVisible(true);
+					} catch (DriverErrorException e1) {
+						e1.printStackTrace();
+					}
 				}
 				else{
-					JOptionPane.showMessageDialog(panel, "Wrong username or password", "ERROR!",
+					JOptionPane.showMessageDialog(WelcomeScreen.this, "Wrong username or password", "ERROR!",
 							JOptionPane.ERROR_MESSAGE);
 				}
+			}
+		});
+		
+		buttonExit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
 			}
 		});
 	}

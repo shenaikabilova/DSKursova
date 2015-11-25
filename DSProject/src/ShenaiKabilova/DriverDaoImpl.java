@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class DriverDaoImpl implements DriverDAO {
 	 * @see DriverDAO#insert(Drivers)
 	 */
 	@Override
-	public void insert(Drivers driver) {
+	public void insert(Drivers driver) throws DriverErrorException {
 		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
 				"DSProject", "password")){
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -81,8 +82,10 @@ public class DriverDaoImpl implements DriverDAO {
 			pr.executeUpdate();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} catch (SQLIntegrityConstraintViolationException e){
+			throw new DriverErrorException("EGN is already taken!");
 		}catch (SQLException e) {
-			e.printStackTrace();
+			throw new DriverErrorException("Driver cannot be added!");
 		}
 	}
 
@@ -90,7 +93,7 @@ public class DriverDaoImpl implements DriverDAO {
 	 * @see DriverDAO#delete(int)
 	 */
 	@Override
-	public void delete(String driverEgn) {
+	public void delete(String driverEgn) throws DriverErrorException {
 		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
 				"DSProject", "password")){
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -103,7 +106,7 @@ public class DriverDaoImpl implements DriverDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}catch (SQLException e) {
-			e.printStackTrace();
+			throw new DriverErrorException("Driver cannot be deleted!");
 		}
 	}
 
@@ -111,7 +114,7 @@ public class DriverDaoImpl implements DriverDAO {
 	 * @see DriverDAO#update(Drivers)
 	 */
 	@Override
-	public void update(Drivers driver) {
+	public void update(Drivers driver) throws DriverErrorException {
 		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
 				"DSProject", "password")){
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -128,8 +131,10 @@ public class DriverDaoImpl implements DriverDAO {
 					
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLIntegrityConstraintViolationException e){
+			throw new DriverErrorException("EGN is already taken!");
+		} catch (SQLException e) {
+			throw new DriverErrorException("Driver cannot be added!");
 		}
 	}
 
@@ -137,7 +142,7 @@ public class DriverDaoImpl implements DriverDAO {
 	 * @see DriverDAO#search(int)
 	 */
 	@Override
-	public Drivers search(String driverEgn) {
+	public Drivers search(String driverEgn) throws DriverErrorException {
 		Drivers driver = new Drivers();
 		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
 				"DSProject", "password")){
@@ -158,10 +163,13 @@ public class DriverDaoImpl implements DriverDAO {
 				
 				return driver;
 			}
+			else {
+				throw new DriverErrorException("Driver with EGN " + driverEgn + " cannot be found");
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}catch (SQLException e) {
-			e.printStackTrace();
+			throw new DriverErrorException("Driver cannot be found!"); 
 		}
 		return driver;
 	}

@@ -12,12 +12,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import Other.WelcomeScreen;
 import ShenaiKabilova.DriverDAO;
 import ShenaiKabilova.DriverDaoImpl;
+import ShenaiKabilova.DriverErrorException;
 import ShenaiKabilova.VehicleDAO;
 import ShenaiKabilova.VehicleDaoImpl;
 
@@ -76,11 +78,12 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 	private DriverDAO driver = new DriverDaoImpl();
 	private VehicleDAO vehicle = new VehicleDaoImpl();
 	
-	public UserInterfaceTrips() {
+	public UserInterfaceTrips() throws DriverErrorException {
 		setTitle("Add trip");
 		setSize(800, 300);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 		
 		this.panel = new JPanel();
 		panel.setLayout(null);
@@ -259,28 +262,35 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Date startDate = new Date((int)comboBoxStartYear.getSelectedItem()-1900, 
-										  (int)comboBoxStartMonth.getSelectedItem()-1,
-										  (int)comboBoxStartDay.getSelectedItem(), 
-										  (int)comboBoxStartHour.getSelectedItem(), 
-										  (int)comboBoxStartMinute.getSelectedItem());
-				
-				Date endDate = new Date((int)comboBoxEndYear.getSelectedItem()-1900, 
-										(int)comboBoxEndMonth.getSelectedItem()-1,
-								        (int)comboBoxEndDay.getSelectedItem(), 
-									    (int)comboBoxEndHour.getSelectedItem(), 
-										(int)comboBoxEndMinute.getSelectedItem());
-				
-				Trips trip = new Trips(Integer.parseInt(textFieldTripID.getText()), 
-														textFieldFirstName.getText(), 
-														textFieldLastName.getText(), 
-														textFieldLicense.getText(), 
-														textFieldEGN.getText(), 
-														comboBoxRegNumber.getSelectedItem().toString(), 
-														startDate, 
-														endDate, 
-														Long.parseLong(textFieldKM.getText()));
-				newTrip.insert(trip);
+				try{
+					Date startDate = new Date((int)comboBoxStartYear.getSelectedItem()-1900, 
+											  (int)comboBoxStartMonth.getSelectedItem()-1,
+											  (int)comboBoxStartDay.getSelectedItem(), 
+											  (int)comboBoxStartHour.getSelectedItem(), 
+											  (int)comboBoxStartMinute.getSelectedItem());
+					
+					Date endDate = new Date((int)comboBoxEndYear.getSelectedItem()-1900, 
+											(int)comboBoxEndMonth.getSelectedItem()-1,
+									        (int)comboBoxEndDay.getSelectedItem(), 
+										    (int)comboBoxEndHour.getSelectedItem(), 
+											(int)comboBoxEndMinute.getSelectedItem());
+					
+					Trips trip = new Trips(Integer.parseInt(textFieldTripID.getText()), 
+															textFieldFirstName.getText(), 
+															textFieldLastName.getText(), 
+															textFieldLicense.getText(), 
+															textFieldEGN.getText(), 
+															comboBoxRegNumber.getSelectedItem().toString(), 
+															startDate, 
+															endDate, 
+															Long.parseLong(textFieldKM.getText()));
+					newTrip.insert(trip);
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "New trip is added!");
+				} catch (TripsException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
+				} catch (NumberFormatException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Fill empty fields!");
+				}
 			}
 		});
 		
@@ -288,35 +298,48 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Date startDate = new Date((int)comboBoxStartYear.getSelectedItem()-1900, 
-						  (int)comboBoxStartMonth.getSelectedItem()-1,
-						  (int)comboBoxStartDay.getSelectedItem(), 
-						  (int)comboBoxStartHour.getSelectedItem()-1, 
-						  (int)comboBoxStartMinute.getSelectedItem()-1);
-
-				Date endDate = new Date((int)comboBoxEndYear.getSelectedItem()-1900, 
-										(int)comboBoxEndMonth.getSelectedItem()-1,
-								        (int)comboBoxEndDay.getSelectedItem(), 
-									    (int)comboBoxEndHour.getSelectedItem()-1, 
-										(int)comboBoxEndMinute.getSelectedItem()-1);
-				
-				Trips trip = new Trips(Integer.parseInt(textFieldTripID.getText()), 
-														textFieldFirstName.getText(), 
-														textFieldLastName.getText(), 
-														textFieldLicense.getText(), 
-														textFieldEGN.getText(), 
-														comboBoxRegNumber.getSelectedItem().toString(), 
-														startDate, 
-														endDate, 
-														Long.parseLong(textFieldKM.getText()));
-				newTrip.update(trip);
+				try{
+					Date startDate = new Date((int)comboBoxStartYear.getSelectedItem()-1900, 
+							  (int)comboBoxStartMonth.getSelectedItem()-1,
+							  (int)comboBoxStartDay.getSelectedItem(), 
+							  (int)comboBoxStartHour.getSelectedItem()-1, 
+							  (int)comboBoxStartMinute.getSelectedItem()-1);
+	
+					Date endDate = new Date((int)comboBoxEndYear.getSelectedItem()-1900, 
+											(int)comboBoxEndMonth.getSelectedItem()-1,
+									        (int)comboBoxEndDay.getSelectedItem(), 
+										    (int)comboBoxEndHour.getSelectedItem()-1, 
+											(int)comboBoxEndMinute.getSelectedItem()-1);
+					
+					Trips trip = new Trips(Integer.parseInt(textFieldTripID.getText()), 
+															textFieldFirstName.getText(), 
+															textFieldLastName.getText(), 
+															textFieldLicense.getText(), 
+															textFieldEGN.getText(), 
+															comboBoxRegNumber.getSelectedItem().toString(), 
+															startDate, 
+															endDate, 
+															Long.parseLong(textFieldKM.getText()));
+					
+					newTrip.update(trip);
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Trip is updated!");
+				} catch (TripsException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
+				} catch (NumberFormatException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Fill empty fields!");
+				}
 			}
 		});
 		
 		buttonDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newTrip.delete(Integer.parseInt(textFieldTripID.getText()));
+				try{
+					newTrip.delete(Integer.parseInt(textFieldTripID.getText()));
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Trip is deleted!");
+				} catch(TripsException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
+				}
 			}
 		});
 		
@@ -324,33 +347,48 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Trips trip = newTrip.search(Integer.parseInt(textFieldTripID.getText()));
+				try{
+					Trips trip = newTrip.search(Integer.parseInt(textFieldTripID.getText()));
 				
-				textFieldFirstName.setText(trip.getDriverFirstName());
-				textFieldLastName.setText(trip.getDriverLastName());
-				textFieldLicense.setText(trip.getDriverLicense());
-				textFieldEGN.setText(trip.getDriverEgn());
-				textFieldKM.setText(Long.toString((trip.getKm())));
-				comboBoxRegNumber.setSelectedItem(trip.getVehicleRegNumber());
-				
-				comboBoxStartDay.setSelectedItem(trip.getStartDate().getDate());
-				comboBoxStartMonth.setSelectedItem(trip.getStartDate().getMonth()+1);
-				comboBoxStartYear.setSelectedItem(trip.getStartDate().getYear()+1900);
-				comboBoxStartHour.setSelectedItem(trip.getStartDate().getHours());
-				comboBoxStartMinute.setSelectedItem(trip.getStartDate().getMinutes());
-				
-				comboBoxEndDay.setSelectedItem(trip.getEndDate().getDate());
-				comboBoxEndMonth.setSelectedItem(trip.getEndDate().getMonth()+1);
-				comboBoxEndYear.setSelectedItem(trip.getEndDate().getYear()+1900);
-				comboBoxEndHour.setSelectedItem(trip.getEndDate().getHours());
-				comboBoxEndMinute.setSelectedItem(trip.getEndDate().getMinutes());
+					textFieldFirstName.setText(trip.getDriverFirstName());
+					textFieldLastName.setText(trip.getDriverLastName());
+					textFieldLicense.setText(trip.getDriverLicense());
+					textFieldEGN.setText(trip.getDriverEgn());
+					textFieldKM.setText(Long.toString((trip.getKm())));
+					comboBoxRegNumber.setSelectedItem(trip.getVehicleRegNumber());
+					
+					comboBoxStartDay.setSelectedItem(trip.getStartDate().getDate());
+					comboBoxStartMonth.setSelectedItem(trip.getStartDate().getMonth()+1);
+					comboBoxStartYear.setSelectedItem(trip.getStartDate().getYear()+1900);
+					comboBoxStartHour.setSelectedItem(trip.getStartDate().getHours());
+					comboBoxStartMinute.setSelectedItem(trip.getStartDate().getMinutes());
+					
+					comboBoxEndDay.setSelectedItem(trip.getEndDate().getDate());
+					comboBoxEndMonth.setSelectedItem(trip.getEndDate().getMonth()+1);
+					comboBoxEndYear.setSelectedItem(trip.getEndDate().getYear()+1900);
+					comboBoxEndHour.setSelectedItem(trip.getEndDate().getHours());
+					comboBoxEndMinute.setSelectedItem(trip.getEndDate().getMinutes());
+				} catch(TripsException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
+				}
 			}
 		});
 		
 		buttonViewTrips.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new CreateTableTrips().setVisible(true);
+				String buttons[] = {"Make report", "View all"};
+				
+				int response = JOptionPane.showOptionDialog(UserInterfaceTrips.this, "Do you want to open report or all", "Choise", 
+						JOptionPane.OK_OPTION, 0, null, buttons, buttons.length);
+				
+			
+				if(response == JOptionPane.OK_OPTION) {
+					new CreateTableTripsReport().setVisible(true);
+				}
+				else {
+					new CreateTableTrips().setVisible(true);
+				}
 			}
 		});
 		

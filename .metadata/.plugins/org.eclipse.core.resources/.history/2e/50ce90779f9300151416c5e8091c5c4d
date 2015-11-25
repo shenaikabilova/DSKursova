@@ -1,0 +1,18 @@
+/**
+ * 
+ */
+package GeorgiPopov;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class TripsException extends Exception {
+	public TripsException(){
+		super();
+	}
+	
+	public TripsException (String message) {
+		super(message);
+	}
+}

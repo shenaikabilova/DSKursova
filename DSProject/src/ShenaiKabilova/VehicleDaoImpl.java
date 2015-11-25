@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.List;
 
 public class VehicleDaoImpl implements VehicleDAO{
 	@Override
-	public void insert(Vehicles vehicle) throws SQLIntegrityConstraintViolationException, SQLException {
+	public void insert(Vehicles vehicle) throws VehicleErrorException {
 		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
 				"DSProject", "password")) {
 			
@@ -51,14 +50,14 @@ public class VehicleDaoImpl implements VehicleDAO{
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLIntegrityConstraintViolationException e) {
-			throw new SQLIntegrityConstraintViolationException("Unique value to EGN");
+			throw new VehicleErrorException("Vehicle registration number is already taken!");
 		}catch (SQLException e) {
-			throw new SQLException("Could not add new driver");
+			throw new VehicleErrorException("New vehicle cannot be added!");
 		}
 	}
 
 	@Override
-	public void delete(String regNumber) {
+	public void delete(String regNumber) throws VehicleErrorException{
 		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
 				"DSProject", "password")){
 			
@@ -71,13 +70,13 @@ public class VehicleDaoImpl implements VehicleDAO{
 			pr.executeUpdate();
 		} catch (ClassNotFoundException e){
 			e.printStackTrace();
-		}catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			throw new VehicleErrorException("Vehicle cannot be delete!");
 		}
 	}
 
 	@Override
-	public void update(Vehicles vehicle) {
+	public void update(Vehicles vehicle) throws VehicleErrorException {
 		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
 				"DSProject", "password")) {
 			
@@ -106,8 +105,10 @@ public class VehicleDaoImpl implements VehicleDAO{
 			connection.close();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} catch (SQLIntegrityConstraintViolationException e) {
+			throw new VehicleErrorException("Vehicle registration number is already taken!");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new VehicleErrorException("Vehicle cannot be update!");
 		}
 	}
 
@@ -162,7 +163,7 @@ public class VehicleDaoImpl implements VehicleDAO{
 	 * @see VehicleDAO#search(java.lang.String)
 	 */
 	@Override
-	public Vehicles search(String regNumber){
+	public Vehicles search(String regNumber) throws VehicleErrorException{
 		Vehicles vehicle = new Vehicles();
 		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",
 				"DSProject", "password")){
@@ -190,12 +191,12 @@ public class VehicleDaoImpl implements VehicleDAO{
 				
 				return vehicle;
 			} else {
-				throw new SQLDataException("Data not found");
+				throw new VehicleErrorException("Vehicle with registration number " + regNumber + " cannot be find!");
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}catch (SQLException e) {
-			e.printStackTrace();
+			throw new VehicleErrorException("Vehicle with registration number " + regNumber + " cannot be find!");
 		} 
 		return vehicle;
 	}
@@ -204,7 +205,7 @@ public class VehicleDaoImpl implements VehicleDAO{
 	 * @see ShenaiKabilova.VehicleDAO#searchVehicle(java.lang.String)
 	 */
 	@Override
-	public List<String> searchVehicle(String license) {
+	public List<String> searchVehicle(String license){
 		List<String> searchVehicle = new ArrayList<String>();
 		
 		try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl",

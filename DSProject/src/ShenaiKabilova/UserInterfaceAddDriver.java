@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -58,6 +56,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		setSize(430, 350);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 		
 		this.panel = new JPanel();
 		panel.setLayout(null);
@@ -79,6 +78,16 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		panel.add(labelEgn);
 		
 		this.textFieldFirstName.setBounds(100, 20, 150, 25);
+//		textFieldFirstName.addKeyListener(new KeyAdapter() {
+//			public void keyTyped(KeyEvent e) {
+//				textFieldFirstName.setText(new TextField().toString().substring(0, 1).toUpperCase());
+//				textFieldFirstName.setText(new TextField().toString().substring(1).toLowerCase());
+//				char keyChar = e.getKeyChar();
+//				    if (Character.isLowerCase(keyChar)) {
+//				      e.setKeyChar(Character.toUpperCase(keyChar));
+//				    }
+//			}
+//		});
 		panel.add(textFieldFirstName);
 		
 		this.textFieldLastName.setBounds(100, 50, 150, 25);
@@ -132,22 +141,24 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		buttonInsert.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Drivers addDriver = new Drivers(textFieldFirstName.getText(), 
+				try {
+					Drivers addDriver = new Drivers(textFieldFirstName.getText(), 
 												textFieldLastName.getText(),
 												(String) comboBoxLicense.getSelectedItem(), 
 												textFieldPassword.getText(),
 												textFieldEgn.getText());
 
-				try {
+				
 					if(new Validate().isvalidEGN(textFieldEgn.getText())==true);
-					driver.insert(addDriver);
 					
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Add - success!");
-				} catch (SQLIntegrityConstraintViolationException e1) {
+					
+					driver.insert(addDriver);
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Driver is added!");
+				}catch (DriverErrorException e1) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
-				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
-				} catch (Exception e1) {
+				} catch (NumberFormatException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Fill empty fields!");
+				}catch (Exception e1) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
 				}
 			}
@@ -156,21 +167,32 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		buttonUpdate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Drivers updateDriver = new Drivers(textFieldFirstName.getText(), textFieldLastName.getText(),
+				try{
+					Drivers updateDriver = new Drivers(textFieldFirstName.getText(), textFieldLastName.getText(),
 												   (String) comboBoxLicense.getSelectedItem(), 
 												    textFieldPassword.getText(),
 												    textFieldEgn.getText());
-				driver.update(updateDriver);
 				
-				JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Update - success!");
+					driver.update(updateDriver);
+				
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Driver is updated!");
+				} catch (DriverErrorException e1) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+				} catch (NumberFormatException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Fill empty fields!");
+				}
 			}
 		});
 		
 		buttonDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				driver.delete(textFieldEgn.getText());
-				JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Delete - success!");
+				try{
+					driver.delete(textFieldEgn.getText());
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Driver is deleted!");
+				} catch(DriverErrorException e1) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+				}
 			}
 		});
 		
@@ -184,12 +206,16 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		buttonSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Drivers d = driver.search(textFieldEgn.getText());
-				
-				textFieldFirstName.setText(d.getDriverFirstName());
-				textFieldLastName.setText(d.getDriverLastName());
-				comboBoxLicense.setSelectedItem(d.getDriverLicense());
-				textFieldPassword.setText(d.getPassword());
+				try{
+					Drivers d = driver.search(textFieldEgn.getText());
+					
+					textFieldFirstName.setText(d.getDriverFirstName());
+					textFieldLastName.setText(d.getDriverLastName());
+					comboBoxLicense.setSelectedItem(d.getDriverLicense());
+					textFieldPassword.setText(d.getPassword());
+				} catch (DriverErrorException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, exp.getMessage());
+				}
 			}
 		});
 		

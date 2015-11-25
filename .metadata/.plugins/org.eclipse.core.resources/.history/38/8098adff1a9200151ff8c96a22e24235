@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package ShenaiKabilova;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class DriverErrorException extends Exception {
+
+}

@@ -1,0 +1,283 @@
+package ShenaiKabilova;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import Other.Validate;
+
+/**
+ * 
+ */
+
+/**
+ * @author shenaikabilova
+ *
+ */
+@SuppressWarnings("serial")
+public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionListener, FocusListener {
+	private JPanel panel;
+	
+	private JLabel labelFirstName = new JLabel("First name: ");
+	private JLabel labelLastName = new JLabel("Last name: ");
+	private JLabel labelLicense = new JLabel("License: ");
+	private JLabel labelPassword = new JLabel("Password: ");
+	private JLabel labelEgn = new JLabel("EGN: ");
+	
+	private JTextField textFieldFirstName = new JTextField("");
+	private JTextField textFieldLastName = new JTextField("");
+	private JTextField textFieldPassword = new JTextField("");
+	private JTextField textFieldEgn = new JTextField("");
+	
+	private String[] license = {"A", "B", "C", "D", "BE", "CE", "DE", "T", "A"};
+	private JComboBox<String> comboBoxLicense = new JComboBox<String>(license);
+	
+	private JButton buttonInsert = new JButton("Insert");
+	private JButton buttonDelete = new JButton("Delete");
+	private JButton buttonUpdate = new JButton("Update");
+	private JButton buttonSearch = new JButton("Search");
+	private JButton buttonReset = new JButton("Reset");
+	private JButton buttonViewTable = new JButton("View table");
+	private JButton buttonExit = new JButton("Exit");
+	
+	private DriverDAO driver = new DriverDaoImpl();
+	
+	public UserInterfaceAddDriver () {
+		setTitle("Add driver");
+		setSize(430, 350);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
+		
+		this.panel = new JPanel();
+		panel.setLayout(null);
+		this.getContentPane().add(panel);
+		
+		this.labelFirstName.setBounds(20, 20, 100, 30);
+		panel.add(labelFirstName);
+		
+		this.labelLastName.setBounds(20, 50, 100, 30);
+		panel.add(labelLastName);
+		
+		this.labelLicense.setBounds(20, 80, 100, 30);
+		panel.add(labelLicense);
+		
+		this.labelPassword.setBounds(20, 110, 100, 30);
+		panel.add(labelPassword);
+		
+		this.labelEgn.setBounds(20, 140, 100, 30);
+		panel.add(labelEgn);
+		
+		this.textFieldFirstName.setBounds(100, 20, 150, 25);
+		textFieldFirstName.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+			}
+		});
+		textFieldFirstName.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char keyChar = e.getKeyChar();
+				System.out.println(e.isActionKey());
+				    if (Character.isLowerCase(keyChar)) {
+				      e.setKeyChar(Character.toUpperCase(keyChar));
+				    }
+			}
+		});
+		panel.add(textFieldFirstName);
+		
+		this.textFieldLastName.setBounds(100, 50, 150, 25);
+		panel.add(textFieldLastName);
+		
+		this.comboBoxLicense.setBounds(100, 80, 150, 25);
+		panel.add(comboBoxLicense);
+		
+		this.textFieldPassword.setBounds(100, 110, 150, 25);
+		panel.add(textFieldPassword);
+		
+		this.textFieldEgn.setBounds(100, 140, 150, 25);
+		panel.add(textFieldEgn);
+		
+		this.buttonInsert.setBounds(280, 20, 100, 30);
+		panel.add(buttonInsert);
+		
+		this.buttonUpdate.setBounds(280, 60, 100, 30);
+		panel.add(buttonUpdate);
+		
+		this.buttonDelete.setBounds(280, 100, 100, 30);
+		panel.add(buttonDelete);
+		
+		this.buttonSearch.setBounds(280, 140, 100, 30);
+		panel.add(buttonSearch);
+		
+		this.buttonReset.setBounds(280, 180, 100, 30);
+		panel.add(buttonReset);
+		
+		this.buttonViewTable.setBounds(280, 220, 100, 30);
+		panel.add(buttonViewTable);
+		
+		this.buttonExit.setBounds(280, 260, 100, 30);
+		panel.add(buttonExit);
+		
+		textFieldEgn.addFocusListener(this);
+		buttonInsert.addActionListener(this);
+		buttonUpdate.addActionListener(this);
+		buttonDelete.addActionListener(this);
+		buttonSearch.addActionListener(this);
+		buttonViewTable.addActionListener(this);
+		buttonExit.addActionListener(this);
+		buttonReset.addActionListener(this);
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		buttonInsert.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Drivers addDriver = new Drivers(textFieldFirstName.getText(), 
+												textFieldLastName.getText(),
+												(String) comboBoxLicense.getSelectedItem(), 
+												textFieldPassword.getText(),
+												textFieldEgn.getText());
+
+				
+					if(new Validate().isvalidEGN(textFieldEgn.getText())==true);
+					
+					
+					driver.insert(addDriver);
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Driver is added!");
+				}catch (DriverErrorException e1) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+				} catch (NumberFormatException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Fill empty fields!");
+				}catch (Exception e1) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+				}
+			}
+		});
+		
+		buttonUpdate.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try{
+					Drivers updateDriver = new Drivers(textFieldFirstName.getText(), textFieldLastName.getText(),
+												   (String) comboBoxLicense.getSelectedItem(), 
+												    textFieldPassword.getText(),
+												    textFieldEgn.getText());
+				
+					driver.update(updateDriver);
+				
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Driver is updated!");
+				} catch (DriverErrorException e1) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+				} catch (NumberFormatException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Fill empty fields!");
+				}
+			}
+		});
+		
+		buttonDelete.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try{
+					driver.delete(textFieldEgn.getText());
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Driver is deleted!");
+				} catch(DriverErrorException e1) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+				}
+			}
+		});
+		
+		buttonViewTable.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new CreateTableDrivers().setVisible(true);
+			}
+		});
+		
+		buttonSearch.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try{
+					Drivers d = driver.search(textFieldEgn.getText());
+					
+					textFieldFirstName.setText(d.getDriverFirstName());
+					textFieldLastName.setText(d.getDriverLastName());
+					comboBoxLicense.setSelectedItem(d.getDriverLicense());
+					textFieldPassword.setText(d.getPassword());
+				} catch (DriverErrorException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, exp.getMessage());
+				}
+			}
+		});
+		
+		buttonReset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textFieldFirstName.setText("");
+				textFieldLastName.setText("");
+				comboBoxLicense.setSelectedItem(1);
+				textFieldPassword.setText("");
+				textFieldEgn.setText("");
+			}
+		});
+		
+		buttonExit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new UserInterface().setVisible(true);
+			}
+		});
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		setVisible(true);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+	 */
+	@Override
+	public void focusGained(FocusEvent e) {
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+	 */
+	@Override
+	public void focusLost(FocusEvent e) {
+		try {
+			if(new Validate().isvalidEGN(textFieldEgn.getText())==true);
+		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+		}
+	}
+}

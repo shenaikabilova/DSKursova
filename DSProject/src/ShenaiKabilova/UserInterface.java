@@ -27,6 +27,7 @@ public class UserInterface extends JFrame implements Runnable, ActionListener{
 		setSize(300, 300);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 		
 		this.panel = new JPanel();
 		panel.setLayout(null);

@@ -25,7 +25,7 @@ public class Validate {
                 throw new Exception("EGN should contain only numbers!");
         }
         if(year < 0 || year > 99) {
-        	throw new Exception("Expected year between 00..99");
+        	throw new Exception("Expected year between 00...99");
         }
         if(month > 20 && month < 40) {
                 month -= 20;
@@ -33,10 +33,10 @@ public class Validate {
                 month -=40;                     
         }
         if (month < 1 || month > 12) {
-                throw new Exception("Month should be between 1..12!");
+                throw new Exception("Month should be between 1...12!");
         }
         if(day < 1 || day > 31) {
-                throw new Exception("Date should be between 1..31");
+                throw new Exception("Date should be between 1...31");
         }
          
         for(int i = 0; i < egn.length() - 1; i++) {

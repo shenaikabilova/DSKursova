@@ -1,0 +1,18 @@
+/**
+ * 
+ */
+package ShenaiKabilova;
+
+/**
+ * @author shenaikabilova
+ *
+ */
+public class VehicleErrorException extends Exception{
+	public VehicleErrorException(){
+		super();
+	}
+	
+	public VehicleErrorException(String message) {
+		super(message);
+	}
+}

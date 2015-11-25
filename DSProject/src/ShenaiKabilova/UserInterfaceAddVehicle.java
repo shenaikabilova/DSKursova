@@ -69,6 +69,7 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		setSize(600, 450);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 		
 		this.panel = new JPanel();
 		panel.setLayout(null);
@@ -193,10 +194,10 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			public void actionPerformed(ActionEvent e) {
 				try{
 					Date date = new Date((int)comboBoxYears.getSelectedItem()-1900, 
-									     (int)comboBoxMonths.getSelectedItem()-1, 
-									     (int)comboBoxDays.getSelectedItem());
+										 (int)comboBoxMonths.getSelectedItem()-1, 
+										 (int)comboBoxDays.getSelectedItem());
 					
-					
+				
 					Vehicles addVehicle = new Vehicles(textFieldTypeVehicle.getText(),
 													   textFieldRegNumber.getText(),
 													   Integer.parseInt(textFieldYearVehicle.getText()),
@@ -206,18 +207,18 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 													   Integer.parseInt(textFieldRepairCount.getText()),
 													   date,
 													   (String) comboboxLicense.getSelectedItem());
-						
+				
 					if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText()) == false ){
-						JOptionPane.showMessageDialog(null, "Invalid registration number of vehicle", 
+						JOptionPane.showMessageDialog(null, "Invalid registration number of vehicle!", 
 								"Wrong registracion number", JOptionPane.ERROR_MESSAGE);
+					} else {
+						vehicle.insert(addVehicle);
+						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Vehicle is added!");
 					}
-						
-					vehicle.insert(addVehicle);
-						
-					JOptionPane.showMessageDialog(null, "Add - success", "Correct", JOptionPane.OK_OPTION);
-					
-				}catch(Throwable exc){
-					JOptionPane.showMessageDialog(null, exc.getMessage(),"Exception", JOptionPane.ERROR_MESSAGE);
+				}catch(VehicleErrorException exc){
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exc.getMessage());
+				} catch(NumberFormatException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Fill empty fields!");
 				}
 			}
 		});
@@ -226,14 +227,11 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Date date = new Date((int)comboBoxYears.getSelectedItem()-1900, 
-									 (int)comboBoxMonths.getSelectedItem()-1, 
-									 (int)comboBoxDays.getSelectedItem());
-		
-				if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText()) == false ){
-					JOptionPane.showMessageDialog(null, "Invalid reg number", "Wrong registracion number", 
-							JOptionPane.ERROR_MESSAGE);
-				} else {
+				try{
+					Date date = new Date((int)comboBoxYears.getSelectedItem()-1900, 
+										 (int)comboBoxMonths.getSelectedItem()-1, 
+										 (int)comboBoxDays.getSelectedItem());
+				
 					Vehicles updateVehicle = new Vehicles(textFieldTypeVehicle.getText(),
 														  textFieldRegNumber.getText(),
 														  Integer.parseInt(textFieldYearVehicle.getText()),
@@ -242,9 +240,19 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 														  Integer.parseInt(textFieldKM.getText()),
 														  Integer.parseInt(textFieldRepairCount.getText()),
 														  date,
-														 (String) comboboxLicense.getSelectedItem());
-	
-					vehicle.update(updateVehicle);
+														  (String) comboboxLicense.getSelectedItem());
+				
+					if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText()) == false ){
+						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Invalid reg number", "Wrong registracion number", 
+								JOptionPane.ERROR_MESSAGE);
+					} else {
+						vehicle.update(updateVehicle);
+						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Vehicle is updated!");
+					}
+				}catch (VehicleErrorException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage());
+				} catch(NumberFormatException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Fill empty fields!");
 				}
 			}
 		});
@@ -252,8 +260,12 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		buttonDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				vehicle.delete(textFieldRegNumber.getText());
-				JOptionPane.showMessageDialog(null, "Delete - success", "Correct", JOptionPane.OK_OPTION);
+				try{
+					vehicle.delete(textFieldRegNumber.getText());
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Vehicle is deleted!");
+				} catch (VehicleErrorException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage());
+				}
 			}
 		});
 		
@@ -261,18 +273,22 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Vehicles v = vehicle.search(textFieldRegNumber.getText());
+				try{
+					Vehicles v = vehicle.search(textFieldRegNumber.getText());
 			
-				textFieldTypeVehicle.setText(v.getTypeVehicle());
-				textFieldYearVehicle.setText(Integer.toString(v.getYearVehicle()));
-				textFieldColor.setText(v.getColor());
-				textFieldNumberPlaces.setText(Integer.toString(v.getNumerOfPlaces()));
-				textFieldKM.setText(Long.toString(v.getKm()));
-				textFieldRepairCount.setText(Integer.toString(v.getRepairCount()));
-				comboBoxDays.setSelectedItem(v.getLastRerair().getDate());
-				comboBoxMonths.setSelectedItem(v.getLastRerair().getMonth()+1);
-				comboBoxYears.setSelectedItem(v.getLastRerair().getYear()+1900);
-				comboboxLicense.setSelectedItem(v.getDriverLicense());
+					textFieldTypeVehicle.setText(v.getTypeVehicle());
+					textFieldYearVehicle.setText(Integer.toString(v.getYearVehicle()));
+					textFieldColor.setText(v.getColor());
+					textFieldNumberPlaces.setText(Integer.toString(v.getNumerOfPlaces()));
+					textFieldKM.setText(Long.toString(v.getKm()));
+					textFieldRepairCount.setText(Integer.toString(v.getRepairCount()));
+					comboBoxDays.setSelectedItem(v.getLastRerair().getDate());
+					comboBoxMonths.setSelectedItem(v.getLastRerair().getMonth()+1);
+					comboBoxYears.setSelectedItem(v.getLastRerair().getYear()+1900);
+					comboboxLicense.setSelectedItem(v.getDriverLicense());
+				} catch (VehicleErrorException exp) {
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage());
+				}
 			}
 		});
 		

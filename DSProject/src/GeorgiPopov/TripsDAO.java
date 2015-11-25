@@ -11,8 +11,9 @@ import java.util.List;
  */
 public interface TripsDAO {
 	public List<Trips> loadAll ();
-	public void insert(Trips trip);
-	public void update (Trips trip);
-	public void delete (int tripID);
-	public Trips search (int tripID);
+	public void insert(Trips trip) throws TripsException;
+	public void update (Trips trip) throws TripsException;
+	public void delete (int tripID) throws TripsException;
+	public Trips search (int tripID) throws TripsException;
+	public List<Trips> makeReport(String driverEGN);
 }

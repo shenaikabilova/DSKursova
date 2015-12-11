@@ -14,8 +14,8 @@ import javax.swing.table.AbstractTableModel;
 @SuppressWarnings("serial")
 public class TableModelVehicles extends AbstractTableModel {
 	private Object[][] tableVehicles;
-	private String[] columnNameVehicles = {"TYPE_VEHICLE", "REGISTRATION_NUMBER", "YEAR_VEHICLE", "COLOR", 
-										   "NUMBER_PLACES", "KM", "REPAIR_COUNT", "LAST_REPAIR", "LICENSE"};
+	private String[] columnNameVehicles = {"Вид превозно средство", "Регистрационен №", "Година", 
+										   "Брой места", "Км", "Брой ремонти", "Последен ремонт", "Категория"};
 	
 	public TableModelVehicles (VehicleDAO dao) {
 		List<Vehicles> vehicles = dao.listVehicles();
@@ -26,12 +26,11 @@ public class TableModelVehicles extends AbstractTableModel {
 			tableVehicles[i][0] = vehicle.getTypeVehicle();
 			tableVehicles[i][1] = vehicle.getRegistrationNumber();
 			tableVehicles[i][2] = vehicle.getYearVehicle();
-			tableVehicles[i][3] = vehicle.getColor();
-			tableVehicles[i][4] = vehicle.getNumerOfPlaces();
-			tableVehicles[i][5] = vehicle.getKm();
-			tableVehicles[i][6] = vehicle.getRepairCount();
-			tableVehicles[i][7] = vehicle.getLastRerair();
-			tableVehicles[i][8] = vehicle.getDriverLicense();
+			tableVehicles[i][3] = vehicle.getNumerOfPlaces();
+			tableVehicles[i][4] = vehicle.getKm();
+			tableVehicles[i][5] = vehicle.getRepairCount();
+			tableVehicles[i][6] = vehicle.getLastRerair();
+			tableVehicles[i][7] = vehicle.getDriverLicense();
 
 			i++;
 		}

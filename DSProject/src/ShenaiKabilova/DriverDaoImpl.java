@@ -83,9 +83,9 @@ public class DriverDaoImpl implements DriverDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLIntegrityConstraintViolationException e){
-			throw new DriverErrorException("EGN is already taken!");
+			throw new DriverErrorException("Това ЕГН вече съществува!");
 		}catch (SQLException e) {
-			throw new DriverErrorException("Driver cannot be added!");
+			throw new DriverErrorException("Шофьорът не може да се добави!");
 		}
 	}
 
@@ -106,7 +106,7 @@ public class DriverDaoImpl implements DriverDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}catch (SQLException e) {
-			throw new DriverErrorException("Driver cannot be deleted!");
+			throw new DriverErrorException("Шофьорът не може да се изтрие!");
 		}
 	}
 
@@ -132,9 +132,9 @@ public class DriverDaoImpl implements DriverDAO {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLIntegrityConstraintViolationException e){
-			throw new DriverErrorException("EGN is already taken!");
+			throw new DriverErrorException("Това ЕГН вече съществува!");
 		} catch (SQLException e) {
-			throw new DriverErrorException("Driver cannot be added!");
+			throw new DriverErrorException("Шофьорът не може да се промени!");
 		}
 	}
 
@@ -164,12 +164,12 @@ public class DriverDaoImpl implements DriverDAO {
 				return driver;
 			}
 			else {
-				throw new DriverErrorException("Driver with EGN " + driverEgn + " cannot be found");
+				throw new DriverErrorException("Шофьор с ЕГН " + driverEgn + " не може да се намери!");
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}catch (SQLException e) {
-			throw new DriverErrorException("Driver cannot be found!"); 
+			throw new DriverErrorException("Шофьор с ЕГН " + driverEgn + " не може да се намери!"); 
 		}
 		return driver;
 	}

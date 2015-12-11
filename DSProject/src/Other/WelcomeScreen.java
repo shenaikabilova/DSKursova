@@ -1,6 +1,8 @@
 package Other;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,14 +31,14 @@ import ShenaiKabilova.UserInterface;
 public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 	private JPanel panel;
 	
-	private JLabel labelUsername = new JLabel("Username:");
-	private JLabel labelPassword = new JLabel("Password:");
+	private JLabel labelUsername = new JLabel("Потребител:");
+	private JLabel labelPassword = new JLabel("Парола:");
 	
 	private JTextField textFieldUsername = new JTextField("");
 	private JPasswordField password = new JPasswordField();
 	
-	private JButton buttonEnter = new JButton("Enter");
-	private JButton buttonExit = new JButton("Exit");
+	private JButton buttonEnter = new JButton("Вход");
+	private JButton buttonExit = new JButton("Изход");
 	
 	public WelcomeScreen() {
 		setTitle("Admin panel");
@@ -56,9 +58,23 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 		panel.add(labelPassword);
 		
 		this.textFieldUsername.setBounds(100, 30, 100, 25);
+		textFieldUsername.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					password.requestFocus();
+				}
+			}
+		});
 		panel.add(textFieldUsername);
 		
 		this.password.setBounds(100, 60, 100, 25);
+		password.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					textFieldUsername.requestFocus();
+				}
+			}
+		});
 		panel.add(password);
 		
 		this.buttonEnter.setBounds(40, 100, 80, 30);
@@ -66,7 +82,7 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 		
 		this.buttonExit.setBounds(150, 100, 80, 30);
 		panel.add(buttonExit);
-		
+
 		buttonEnter.addActionListener(this);
 		buttonExit.addActionListener(this);
 	}
@@ -83,7 +99,7 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 				DriverDAO driver = new DriverDaoImpl();
 				String pass = driver.checkUser(textFieldUsername.getText());
 				
-				if (textFieldUsername.getText().equals("Admin") && password.getText().equals("admin")) {
+				if (textFieldUsername.getText().equals("Админ") && password.getText().equals("админ")) {
 					dispose();
 					new UserInterface().setVisible(true);;
 				}
@@ -98,8 +114,7 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 					}
 				}
 				else{
-					JOptionPane.showMessageDialog(WelcomeScreen.this, "Wrong username or password", "ERROR!",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(WelcomeScreen.this, "Грешно потребителско име или парола!");
 				}
 			}
 		});

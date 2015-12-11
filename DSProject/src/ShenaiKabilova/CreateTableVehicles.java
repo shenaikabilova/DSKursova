@@ -20,7 +20,7 @@ public class CreateTableVehicles extends JFrame implements Runnable, ActionListe
 	private JTable tableVehicles;
 	
 	public CreateTableVehicles() {
-		JFrame frame = new JFrame("Vehicles");
+		JFrame frame = new JFrame("Превозни средства");
 		
 		VehicleDAO vehicles = new VehicleDaoImpl();
 		AbstractTableModel tableModel = new TableModelVehicles(vehicles);

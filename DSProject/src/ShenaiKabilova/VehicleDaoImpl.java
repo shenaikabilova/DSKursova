@@ -24,24 +24,23 @@ public class VehicleDaoImpl implements VehicleDAO{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			final String QUERY = "INSERT INTO "
-					+ "VEHICLE (TYPE_VEHICLE, REGISTRATION_NUMBER, YEAR_VEHICLE, COLOR,"
+					+ "VEHICLE (TYPE_VEHICLE, REGISTRATION_NUMBER, YEAR_VEHICLE,"
 					+ "NUMBER_PLACES, KM, REPAIR_COUNT, LAST_REPAIR, DRIVER_LICENSE) "
-					+ "VALUES(?,?,?,?,?,?,?,?,?)";
+					+ "VALUES(?,?,?,?,?,?,?,?)";
 			
 			PreparedStatement pr = connection.prepareStatement(QUERY);
 			
 			pr.setString(1, vehicle.getTypeVehicle());
 			pr.setString(2, vehicle.getRegistrationNumber());
 			pr.setInt(3, vehicle.getYearVehicle());
-			pr.setString(4, vehicle.getColor());
-			pr.setInt(5, vehicle.getNumerOfPlaces());
-			pr.setLong(6, vehicle.getKm());
-			pr.setInt(7, vehicle.getRepairCount());
+			pr.setInt(4, vehicle.getNumerOfPlaces());
+			pr.setLong(5, vehicle.getKm());
+			pr.setInt(6, vehicle.getRepairCount());
 			
 			Date date = new Date(vehicle.getLastRerair().getTime());
-			pr.setDate(8, date);
+			pr.setDate(7, date);
 
-			pr.setString(9, vehicle.getDriverLicense());
+			pr.setString(8, vehicle.getDriverLicense());
 			
 			pr.executeUpdate();
 			
@@ -50,9 +49,9 @@ public class VehicleDaoImpl implements VehicleDAO{
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLIntegrityConstraintViolationException e) {
-			throw new VehicleErrorException("Vehicle registration number is already taken!");
+			throw new VehicleErrorException("Регистрационният номер вече съществува!");
 		}catch (SQLException e) {
-			throw new VehicleErrorException("New vehicle cannot be added!");
+			throw new VehicleErrorException("Новото превозно средсвто не може да се добави!");
 		}
 	}
 
@@ -71,7 +70,7 @@ public class VehicleDaoImpl implements VehicleDAO{
 		} catch (ClassNotFoundException e){
 			e.printStackTrace();
 		} catch (SQLException e) {
-			throw new VehicleErrorException("Vehicle cannot be delete!");
+			throw new VehicleErrorException("Превозното средство не може да се изтрие!");
 		}
 	}
 
@@ -83,7 +82,7 @@ public class VehicleDaoImpl implements VehicleDAO{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			final String QUERY = "UPDATE VEHICLE SET TYPE_VEHICLE = ?, "
-					+ "REGISTRATION_NUMBER = ?, YEAR_VEHICLE = ?, COLOR = ?,"
+					+ "REGISTRATION_NUMBER = ?, YEAR_VEHICLE = ?, "
 					+ "NUMBER_PLACES = ?, KM = ?, REPAIR_COUNT = ?, LAST_REPAIR = ?, DRIVER_LICENSE = ? "
 					+ "WHERE REGISTRATION_NUMBER = '" + vehicle.getRegistrationNumber() + "'";
 			
@@ -92,12 +91,11 @@ public class VehicleDaoImpl implements VehicleDAO{
 			pr.setString(1, vehicle.getTypeVehicle());
 			pr.setString(2, vehicle.getRegistrationNumber());
 			pr.setInt(3, vehicle.getYearVehicle());
-			pr.setString(4, vehicle.getColor());
-			pr.setInt(5, vehicle.getNumerOfPlaces());
-			pr.setLong(6, vehicle.getKm());
-			pr.setInt(7, vehicle.getRepairCount());
-			pr.setDate(8, (Date) vehicle.getLastRerair());
-			pr.setString(9, vehicle.getDriverLicense());
+			pr.setInt(4, vehicle.getNumerOfPlaces());
+			pr.setLong(5, vehicle.getKm());
+			pr.setInt(6, vehicle.getRepairCount());
+			pr.setDate(7, (Date) vehicle.getLastRerair());
+			pr.setString(8, vehicle.getDriverLicense());
 			
 			pr.executeUpdate();
 			
@@ -106,9 +104,9 @@ public class VehicleDaoImpl implements VehicleDAO{
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLIntegrityConstraintViolationException e) {
-			throw new VehicleErrorException("Vehicle registration number is already taken!");
+			throw new VehicleErrorException("Регистрационният номер вече съществува!");
 		} catch (SQLException e) {
-			throw new VehicleErrorException("Vehicle cannot be update!");
+			throw new VehicleErrorException("Превозното средство не може да се промени!");
 		}
 	}
 
@@ -124,7 +122,7 @@ public class VehicleDaoImpl implements VehicleDAO{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			final String QUERY = "SELECT TYPE_VEHICLE, REGISTRATION_NUMBER, YEAR_VEHICLE,"
-					+ "COLOR, NUMBER_PLACES, KM, REPAIR_COUNT, LAST_REPAIR, DRIVER_LICENSE FROM VEHICLE";
+					+ "NUMBER_PLACES, KM, REPAIR_COUNT, LAST_REPAIR, DRIVER_LICENSE FROM VEHICLE";
 			final String QUERY_COUNT = "SELECT COUNT(*) as count FROM VEHICLE";
 			
 			PreparedStatement pr = connection.prepareStatement(QUERY);
@@ -142,14 +140,13 @@ public class VehicleDaoImpl implements VehicleDAO{
 				String typeVehicle = resultSet.getString("TYPE_VEHICLE");
 				String registrationNumber = resultSet.getString("REGISTRATION_NUMBER");
 				int yearVehicle = resultSet.getInt("YEAR_VEHICLE");
-				String color = resultSet.getString("COLOR");
 				int numberOfPlaces = resultSet.getInt("NUMBER_PLACES");
 				int km = resultSet.getInt("KM");
 				int repairCount = resultSet.getInt("REPAIR_COUNT");
 				Date lastRerair = resultSet.getDate("LAST_REPAIR");
 				String driverLicense = resultSet.getString("DRIVER_LICENSE");
 				
-				vehicles.add(new Vehicles(typeVehicle, registrationNumber, yearVehicle, color, 
+				vehicles.add(new Vehicles(typeVehicle, registrationNumber, yearVehicle, 
 					               numberOfPlaces, km, repairCount, lastRerair, driverLicense));
 			}
 			
@@ -170,7 +167,7 @@ public class VehicleDaoImpl implements VehicleDAO{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			final String QUERY = "SELECT TYPE_VEHICLE, REGISTRATION_NUMBER, "
-					+ "YEAR_VEHICLE, COLOR, NUMBER_PLACES, KM, REPAIR_COUNT, LAST_REPAIR, DRIVER_LICENSE"
+					+ "YEAR_VEHICLE, NUMBER_PLACES, KM, REPAIR_COUNT, LAST_REPAIR, DRIVER_LICENSE"
 					+ " FROM VEHICLE WHERE REGISTRATION_NUMBER = '" + regNumber + "'";
 			
 			PreparedStatement pr = connection.prepareStatement(QUERY);
@@ -179,24 +176,23 @@ public class VehicleDaoImpl implements VehicleDAO{
 		if(resultSet.next()) {
 				String typeVehicle = resultSet.getString("TYPE_VEHICLE");
 				int yearVehicle = resultSet.getInt("YEAR_VEHICLE");
-				String color = resultSet.getString("COLOR");
 				int numberOfPlaces = resultSet.getInt("NUMBER_PLACES");
 				int km = resultSet.getInt("KM");
 				int repairCount = resultSet.getInt("REPAIR_COUNT");
 				Date lastRerair = resultSet.getDate("LAST_REPAIR");
 				String driverLicense = resultSet.getString("DRIVER_LICENSE");
 				
-				vehicle = new Vehicles(typeVehicle, regNumber, yearVehicle, color, 
+				vehicle = new Vehicles(typeVehicle, regNumber, yearVehicle, 
 					               numberOfPlaces, km, repairCount, lastRerair, driverLicense);
 				
 				return vehicle;
 			} else {
-				throw new VehicleErrorException("Vehicle with registration number " + regNumber + " cannot be find!");
+				throw new VehicleErrorException("Превозното средство с регистрационен номер " + regNumber + " не може да се намери!");
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}catch (SQLException e) {
-			throw new VehicleErrorException("Vehicle with registration number " + regNumber + " cannot be find!");
+			throw new VehicleErrorException("Превозното средство с регистрационен номер " + regNumber + " не може да се намери!");
 		} 
 		return vehicle;
 	}

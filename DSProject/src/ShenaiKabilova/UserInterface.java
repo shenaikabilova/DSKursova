@@ -18,12 +18,12 @@ import Other.WelcomeScreen;
 public class UserInterface extends JFrame implements Runnable, ActionListener{
 	private JPanel panel;
 	
-	private JButton buttonAddVehice = new JButton("Add vehicle");
-	private JButton buttonAddDriver = new JButton("Add driver");
-	private JButton buttonExit = new JButton("Exit");
+	private JButton buttonAddVehice = new JButton("Добави превозно средство");
+	private JButton buttonAddDriver = new JButton("Добави шофьор");
+	private JButton buttonExit = new JButton("Изход");
 	
 	public UserInterface() {
-		setTitle("DS Project");
+		setTitle("Админ");
 		setSize(300, 300);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -33,13 +33,13 @@ public class UserInterface extends JFrame implements Runnable, ActionListener{
 		panel.setLayout(null);
 		this.getContentPane().add(panel);
 		
-		this.buttonAddVehice.setBounds(80, 30, 100, 45);
+		this.buttonAddVehice.setBounds(50, 30, 200, 45);
 		panel.add(buttonAddVehice);
 		
-		this.buttonAddDriver.setBounds(80, 90, 100, 45);
+		this.buttonAddDriver.setBounds(50, 90, 200, 45);
 		panel.add(buttonAddDriver);
 		
-		this.buttonExit.setBounds(80, 150, 100, 45);
+		this.buttonExit.setBounds(50, 150, 200, 45);
 		panel.add(buttonExit);
 		
 		buttonAddVehice.addActionListener(this);

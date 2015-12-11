@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,14 +26,14 @@ import Other.Validate;
  *
  */
 @SuppressWarnings("serial")
-public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionListener, FocusListener {
+public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionListener {
 	private JPanel panel;
 	
-	private JLabel labelFirstName = new JLabel("First name: ");
-	private JLabel labelLastName = new JLabel("Last name: ");
-	private JLabel labelLicense = new JLabel("License: ");
-	private JLabel labelPassword = new JLabel("Password: ");
-	private JLabel labelEgn = new JLabel("EGN: ");
+	private JLabel labelFirstName = new JLabel("Име: ");
+	private JLabel labelLastName = new JLabel("Фамилия: ");
+	private JLabel labelLicense = new JLabel("Kнижка: ");
+	private JLabel labelPassword = new JLabel("Парола: ");
+	private JLabel labelEgn = new JLabel("ЕГН: ");
 	
 	private JTextField textFieldFirstName = new JTextField("");
 	private JTextField textFieldLastName = new JTextField("");
@@ -41,18 +43,18 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 	private String[] license = {"A", "B", "C", "D", "BE", "CE", "DE", "T", "A"};
 	private JComboBox<String> comboBoxLicense = new JComboBox<String>(license);
 	
-	private JButton buttonInsert = new JButton("Insert");
-	private JButton buttonDelete = new JButton("Delete");
-	private JButton buttonUpdate = new JButton("Update");
-	private JButton buttonSearch = new JButton("Search");
-	private JButton buttonReset = new JButton("Reset");
-	private JButton buttonViewTable = new JButton("View table");
-	private JButton buttonExit = new JButton("Exit");
+	private JButton buttonInsert = new JButton("Добави");
+	private JButton buttonDelete = new JButton("Изтрий");
+	private JButton buttonUpdate = new JButton("Промени");
+	private JButton buttonSearch = new JButton("Намери");
+	private JButton buttonReset = new JButton("Изчисти");
+	private JButton buttonViewTable = new JButton("Изведи");
+	private JButton buttonExit = new JButton("Изход");
 	
 	private DriverDAO driver = new DriverDaoImpl();
 	
 	public UserInterfaceAddDriver () {
-		setTitle("Add driver");
+		setTitle("Добави шофьор");
 		setSize(430, 350);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -78,28 +80,138 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		panel.add(labelEgn);
 		
 		this.textFieldFirstName.setBounds(100, 20, 150, 25);
-//		textFieldFirstName.addKeyListener(new KeyAdapter() {
-//			public void keyTyped(KeyEvent e) {
-//				textFieldFirstName.setText(new TextField().toString().substring(0, 1).toUpperCase());
-//				textFieldFirstName.setText(new TextField().toString().substring(1).toLowerCase());
-//				char keyChar = e.getKeyChar();
-//				    if (Character.isLowerCase(keyChar)) {
-//				      e.setKeyChar(Character.toUpperCase(keyChar));
-//				    }
-//			}
-//		});
+		textFieldFirstName.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				if(textFieldFirstName.getText().length() != 0) {
+					String name = textFieldFirstName.getText();
+					textFieldFirstName.setText(name.substring(0, 1).toUpperCase() + name.substring(1, name.length()).toLowerCase());
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				
+			}
+		});
+		textFieldFirstName.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+			    if (!((c >= 'а') && (c <= 'я') || (c >= 'А') && (c <= 'Я') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+			        getToolkit().beep();
+			        e.consume();
+			    }
+			    
+			    if (textFieldFirstName.getText().length() == 15) {  
+                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Годината трябва да е до 15 букви");
+                        e.consume();// ignore event  
+                }
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textFieldLastName.requestFocus();
+				}
+			}
+		});
 		panel.add(textFieldFirstName);
 		
 		this.textFieldLastName.setBounds(100, 50, 150, 25);
+		textFieldLastName.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				if(textFieldLastName.getText().length() != 0) {
+					String lastName = textFieldLastName.getText();
+					textFieldLastName.setText(lastName.substring(0, 1).toUpperCase() + lastName.substring(1, lastName.length()).toLowerCase());
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		textFieldLastName.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+			    if (!((c >= 'а') && (c <= 'я') || (c >= 'А') && (c <= 'Я') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+			        getToolkit().beep();
+			        e.consume();
+			    }
+			    
+			    if (textFieldFirstName.getText().length() == 15) {  
+                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Годината трябва да е до 15 букви");
+                        e.consume();// ignore event  
+                }
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					comboBoxLicense.requestFocus();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					textFieldFirstName.requestFocus();
+				}
+			}
+		});
 		panel.add(textFieldLastName);
 		
 		this.comboBoxLicense.setBounds(100, 80, 150, 25);
+		comboBoxLicense.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textFieldPassword.requestFocus();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					textFieldLastName.requestFocus();
+				}
+			}
+		});
 		panel.add(comboBoxLicense);
 		
 		this.textFieldPassword.setBounds(100, 110, 150, 25);
+		textFieldPassword.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textFieldEgn.requestFocus();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					comboBoxLicense.requestFocus();
+				}
+			}
+		});
 		panel.add(textFieldPassword);
 		
 		this.textFieldEgn.setBounds(100, 140, 150, 25);
+		textFieldEgn.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				try {
+					if(new Validate().isvalidEGN(textFieldEgn.getText())==true);
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		textFieldEgn.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					textFieldPassword.requestFocus();
+				}
+			}
+		});
 		panel.add(textFieldEgn);
 		
 		this.buttonInsert.setBounds(280, 20, 100, 30);
@@ -123,7 +235,6 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		this.buttonExit.setBounds(280, 260, 100, 30);
 		panel.add(buttonExit);
 		
-		textFieldEgn.addFocusListener(this);
 		buttonInsert.addActionListener(this);
 		buttonUpdate.addActionListener(this);
 		buttonDelete.addActionListener(this);
@@ -151,13 +262,12 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 				
 					if(new Validate().isvalidEGN(textFieldEgn.getText())==true);
 					
-					
 					driver.insert(addDriver);
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Driver is added!");
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е добавен!");
 				}catch (DriverErrorException e1) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
 				} catch (NumberFormatException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Fill empty fields!");
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Попълнете празните полета!");
 				}catch (Exception e1) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
 				}
@@ -175,11 +285,11 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 				
 					driver.update(updateDriver);
 				
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Driver is updated!");
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е променен!");
 				} catch (DriverErrorException e1) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
 				} catch (NumberFormatException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Fill empty fields!");
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Попълнете празните полета!");
 				}
 			}
 		});
@@ -189,7 +299,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 			public void actionPerformed(ActionEvent e) {
 				try{
 					driver.delete(textFieldEgn.getText());
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Driver is deleted!");
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е изтрит!");
 				} catch(DriverErrorException e1) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
 				}
@@ -245,25 +355,5 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 	@Override
 	public void run() {
 		setVisible(true);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
-	 */
-	@Override
-	public void focusGained(FocusEvent e) {
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
-	 */
-	@Override
-	public void focusLost(FocusEvent e) {
-		try {
-			if(new Validate().isvalidEGN(textFieldEgn.getText())==true);
-		} catch (Exception e1) {
-			JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
-		}
 	}
 }

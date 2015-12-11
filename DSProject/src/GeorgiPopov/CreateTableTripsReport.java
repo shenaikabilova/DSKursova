@@ -20,7 +20,7 @@ public class CreateTableTripsReport extends JFrame implements Runnable, ActionLi
 	private JTable tableTrip;
 	
 	public CreateTableTripsReport () {
-		JFrame frame = new JFrame("Trips");
+		JFrame frame = new JFrame("Отчет");
 		
 		TripsDAO trips = new TripsDaoImpl();
 		AbstractTableModel tableModel = new TableModelTripsReport(trips);

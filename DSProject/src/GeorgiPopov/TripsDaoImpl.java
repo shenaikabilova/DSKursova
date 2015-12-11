@@ -95,9 +95,9 @@ public class TripsDaoImpl implements TripsDAO{
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLIntegrityConstraintViolationException e) {
-			throw new TripsException("Trip ID is already taken!");
+			throw new TripsException("ID на пътуването вече съществува!");
 		}catch (SQLException e) {
-			throw new TripsException("Trip cannot be added!");
+			throw new TripsException("Пътуването не може да се добави!");
 		}
 	}
 
@@ -130,9 +130,9 @@ public class TripsDaoImpl implements TripsDAO{
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLIntegrityConstraintViolationException e) {
-			throw new TripsException("Trip ID is already taken!");
+			throw new TripsException("ID на пътуване вече съществува!");
 		}catch (SQLException e) {
-			throw new TripsException("Trip cannot be update!");
+			throw new TripsException("Пътуването не може да се добави!");
 		}
 	}
 
@@ -154,7 +154,7 @@ public class TripsDaoImpl implements TripsDAO{
 		} catch (ClassNotFoundException e){
 			e.printStackTrace();
 		}catch (SQLException e) {
-			throw new TripsException("Trip cannot be delete!");
+			throw new TripsException("Пътуването не може да се изтрие!");
 		}
 	}
 
@@ -189,13 +189,13 @@ public class TripsDaoImpl implements TripsDAO{
 
 				return trip;
 			} else {
-				throw new SQLException("Data not found!");
+				throw new TripsException("Пътуването не може да се намери!");
 			}
 			
 		}catch (ClassNotFoundException e){
 			e.printStackTrace();
 		}catch (SQLException e) {
-			throw new TripsException("Cannot fint trip with trip ID " + tripID);
+			throw new TripsException("Не може да се намери пътуване с ID " + tripID);
 		}
 		return trip;
 	}

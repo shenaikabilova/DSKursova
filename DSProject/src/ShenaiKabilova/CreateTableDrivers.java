@@ -20,7 +20,7 @@ public class CreateTableDrivers extends JFrame implements Runnable, ActionListen
 	private JTable tableDrivers;
 	
 	public CreateTableDrivers() {
-		JFrame frame = new JFrame("Drivers");
+		JFrame frame = new JFrame("״מפüמנט");
 		
 		DriverDAO drivers = new DriverDaoImpl();
 		AbstractTableModel tableModel = new TableModelDrivers(drivers);

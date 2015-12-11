@@ -14,7 +14,7 @@ import javax.swing.table.AbstractTableModel;
 @SuppressWarnings("serial")
 public class TableModelDrivers extends AbstractTableModel {
 	private Object[][] tableDrivers;
-	private String[] columnNameDrivers = {"DRIVER_FIRST_NAME", "DRIVER_LAST_NAME", "DRIVER_LICENSE", "DRIVER_ID", "DRIVER_EGN"};
+	private String[] columnNameDrivers = {"Име", "Фамилия", "Категория", "№", "ЕГН"};
 	
 	public TableModelDrivers (DriverDAO dao) {
 		List<Drivers> drivers = dao.listDrivers();

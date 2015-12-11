@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename field &apos;comboboxLicense&apos; in &apos;ShenaiKabilova.UserInterfaceAddVehicle&apos; to &apos;textFieldLicense&apos;&#x0D;&#x0A;- Original project: &apos;DSProject&apos;&#x0D;&#x0A;- Original element: &apos;ShenaiKabilova.UserInterfaceAddVehicle.comboboxLicense&apos;&#x0D;&#x0A;- Renamed element: &apos;ShenaiKabilova.UserInterfaceAddVehicle.textFieldLicense&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" delegate="false" deprecate="false" description="Rename field &apos;comboboxLicense&apos;" flags="589826" getter="false" id="org.eclipse.jdt.ui.rename.field" input="/src&lt;ShenaiKabilova{UserInterfaceAddVehicle.java[UserInterfaceAddVehicle^comboboxLicense" name="textFieldLicense" references="true" setter="false" stamp="1449664434100" textual="false" version="1.0"/>
+</session>

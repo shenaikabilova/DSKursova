@@ -5,6 +5,8 @@ package GeorgiPopov;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.time.Year;
 import java.util.Date;
 
@@ -31,20 +33,20 @@ import ShenaiKabilova.VehicleDaoImpl;
 public class UserInterfaceTrips extends JFrame implements Runnable, ActionListener{
 	private JPanel panel;
 	
-	private JLabel labelRegNumber = new JLabel("Registration N:");
-	private JLabel labelFirstName = new JLabel("First name:");
-	private JLabel labelLastName = new JLabel("Last name:");
-	private JLabel labelEGN = new JLabel("EGN:");
-	private JLabel labelLicense = new JLabel("License:");
-	private JLabel labelStartTrip = new JLabel("Start trip:");
-	private JLabel labelEntTrip = new JLabel("End trip:");
-	private JLabel labelKM = new JLabel("KM:");
-	private JLabel labelDay = new JLabel("day");
-	private JLabel labelMonth = new JLabel("month");
-	private JLabel labelYear = new JLabel("year");
-	private JLabel labelHour = new JLabel("hour");
-	private JLabel labelMinute = new JLabel("minute");
-	private JLabel labelTripID = new JLabel("Trip ID:");
+	private JLabel labelRegNumber = new JLabel("Регистрационен N:");
+	private JLabel labelFirstName = new JLabel("Име:");
+	private JLabel labelLastName = new JLabel("Фамилия:");
+	private JLabel labelEGN = new JLabel("ЕГН:");
+	private JLabel labelLicense = new JLabel("Категория:");
+	private JLabel labelStartTrip = new JLabel("Начало:");
+	private JLabel labelEntTrip = new JLabel("Край:");
+	private JLabel labelKM = new JLabel("Км:");
+	private JLabel labelDay = new JLabel("ден");
+	private JLabel labelMonth = new JLabel("месец");
+	private JLabel labelYear = new JLabel("година");
+	private JLabel labelHour = new JLabel("час");
+	private JLabel labelMinute = new JLabel("минути");
+	private JLabel labelTripID = new JLabel("ID:");
 	
 	private JTextField textFieldFirstName = new JTextField();
 	private JTextField textFieldLastName = new JTextField();
@@ -65,13 +67,13 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 	private JComboBox<Integer> comboBoxEndHour = new JComboBox<Integer>();
 	private JComboBox<Integer> comboBoxEndMinute = new JComboBox<Integer>();
 	
-	private JButton buttonAdd = new JButton("Add");
-	private JButton buttonUpdate = new JButton("Update");
-	private JButton buttonDelete = new JButton("Delete");
-	private JButton buttonSearch = new JButton("Search");
-	private JButton buttonViewTrips = new JButton("View trips");
-	private JButton buttonReset = new JButton("Reset");
-	private JButton buttonExit = new JButton("Exit");
+	private JButton buttonAdd = new JButton("Добави");
+	private JButton buttonUpdate = new JButton("Промени");
+	private JButton buttonDelete = new JButton("Изтрий");
+	private JButton buttonSearch = new JButton("Намери");
+	private JButton buttonViewTrips = new JButton("Изведи");
+	private JButton buttonReset = new JButton("Изчисти");
+	private JButton buttonExit = new JButton("Изход");
 	
 	private CurrentStateUsername current = new CurrentStateUsername();
 	private TripsDAO newTrip = new TripsDaoImpl();
@@ -79,8 +81,8 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 	private VehicleDAO vehicle = new VehicleDaoImpl();
 	
 	public UserInterfaceTrips() throws DriverErrorException {
-		setTitle("Add trip");
-		setSize(800, 300);
+		setTitle("Нова справка");
+		setSize(650, 350);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
@@ -92,156 +94,180 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 		this.labelFirstName.setBounds(20, 30, 80, 50);
 		panel.add(labelFirstName);
 		
-		this.labelLastName.setBounds(260, 30, 80, 50);
+		this.labelLastName.setBounds(230, 30, 80, 50);
 		panel.add(labelLastName);
 		
-		this.labelEGN.setBounds(500, 30, 80, 50);
+		this.labelEGN.setBounds(20, 65, 80, 50);
 		panel.add(labelEGN);
 		
-		this.labelStartTrip.setBounds(20, 120, 80, 50);
-		panel.add(labelStartTrip);
-		
-		this.labelDay.setBounds(85, 100, 80, 50);
-		panel.add(labelDay);
-		
-		this.labelMonth.setBounds(130, 100, 80, 50);
-		panel.add(labelMonth);
-		
-		this.labelYear.setBounds(190, 100, 80, 50);
-		panel.add(labelYear);
-		
-		this.labelHour.setBounds(250, 100, 80, 50);
-		panel.add(labelHour);
-		
-		this.labelMinute.setBounds(300, 100, 80, 50);
-		panel.add(labelMinute);
-		
-		this.labelEntTrip.setBounds(20, 150, 80, 50);
-		panel.add(labelEntTrip);
-		
-		this.labelLicense.setBounds(20, 70, 80, 50);
+		this.labelLicense.setBounds(230, 65, 80, 50);
 		panel.add(labelLicense);
 		
-		this.labelRegNumber.setBounds(170, 70, 100, 50);
+		this.labelStartTrip.setBounds(20, 160, 80, 50);
+		panel.add(labelStartTrip);
+		
+		this.labelDay.setBounds(100, 140, 80, 50);
+		panel.add(labelDay);
+		
+		this.labelMonth.setBounds(150, 140, 80, 50);
+		panel.add(labelMonth);
+		
+		this.labelYear.setBounds(210, 140, 80, 50);
+		panel.add(labelYear);
+		
+		this.labelHour.setBounds(290, 140, 80, 50);
+		panel.add(labelHour);
+		
+		this.labelMinute.setBounds(350, 140, 80, 50);
+		panel.add(labelMinute);
+		
+		this.labelEntTrip.setBounds(20, 200, 80, 50);
+		panel.add(labelEntTrip);
+		
+		this.labelRegNumber.setBounds(20, 105, 120, 50);
 		panel.add(labelRegNumber);
 		
-		this.labelKM.setBounds(380, 70, 80, 50);
+		this.labelKM.setBounds(260, 105, 80, 50);
 		panel.add(labelKM);
 		
-		this.labelTripID.setBounds(480, 70, 80, 50);
+		this.labelTripID.setBounds(380, 105, 80, 50);
 		panel.add(labelTripID);
 		
-		this.textFieldFirstName.setBounds(90, 45, 160, 25);
+		this.textFieldFirstName.setBounds(60, 45, 160, 25);
 		textFieldFirstName.setText(driver.search(current.getCurrentUsername()).getDriverFirstName());
 		textFieldFirstName.setEditable(false);
 		panel.add(textFieldFirstName);
 		
-		this.textFieldLastName.setBounds(330, 45, 160, 25);
+		this.textFieldLastName.setBounds(300, 45, 160, 25);
 		textFieldLastName.setText(driver.search(current.getCurrentUsername()).getDriverLastName());
 		textFieldLastName.setEditable(false);
 		panel.add(textFieldLastName);
 		
-		this.textFieldEGN.setBounds(540, 45, 160, 25);
+		this.textFieldEGN.setBounds(60, 80, 160, 25);
 		textFieldEGN.setText(current.getCurrentUsername());
 		textFieldEGN.setEditable(false);
 		panel.add(textFieldEGN);
 		
-		this.textFieldLicense.setBounds(90, 80, 60, 25);
+		this.textFieldLicense.setBounds(300, 80, 60, 25);
 		textFieldLicense.setText(driver.search(current.getCurrentUsername()).getDriverLicense());
 		textFieldLicense.setEditable(false);
 		panel.add(textFieldLicense);
 		
-		this.textFieldKM.setBounds(410, 84, 60, 25);
+		this.textFieldKM.setBounds(300, 120, 60, 25);
+		textFieldKM.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					textFieldTripID.requestFocus();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+					comboBoxRegNumber.requestFocus();
+				}
+			}
+		});
 		panel.add(textFieldKM);
 		
-		this.textFieldTripID.setBounds(525, 84, 60, 25);
+		this.textFieldTripID.setBounds(400, 120, 60, 25);
+		textFieldTripID.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+					textFieldKM.requestFocus();
+				}
+			}
+		});
 		panel.add(textFieldTripID);
 		
-		this.comboBoxRegNumber.setBounds(260, 80, 100, 30);
+		this.comboBoxRegNumber.setBounds(140, 115, 100, 30);
 		for(String s : vehicle.searchVehicle(textFieldLicense.getText())) {
 			comboBoxRegNumber.addItem(s);
 		}
+		comboBoxRegNumber.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					textFieldKM.requestFocus();
+				}
+			}
+		});
 		panel.add(comboBoxRegNumber);
 		
-		this.comboBoxStartDay.setBounds(80, 135, 40, 20);
+		this.comboBoxStartDay.setBounds(90, 180, 40, 20);
 		for(int i=1; i<=31; i++) {
 			comboBoxStartDay.addItem(i);
 		}
 		panel.add(comboBoxStartDay);
 		
-		this.comboBoxStartMonth.setBounds(130, 135, 40, 20);
+		this.comboBoxStartMonth.setBounds(150, 180, 40, 20);
 		for(int i=1; i<=12; i++) {
 			comboBoxStartMonth.addItem(i);
 		}
 		panel.add(comboBoxStartMonth);
 		
-		this.comboBoxStartYear.setBounds(180, 135, 60, 20);
+		this.comboBoxStartYear.setBounds(210, 180, 60, 20);
 		for(int i=Year.now().getValue(); i<(Year.now().getValue())+20;i++){
 			comboBoxStartYear.addItem(i);
 		}
 		panel.add(comboBoxStartYear);
 		
-		this.comboBoxStartHour.setBounds(250, 135, 40, 20);
+		this.comboBoxStartHour.setBounds(290, 180, 40, 20);
 		for(int i=1; i<=24; i++) {
 			comboBoxStartHour.addItem(i);
 		}
 		panel.add(comboBoxStartHour);
 		
-		this.comboBoxStartMinute.setBounds(300, 135, 40, 20);
+		this.comboBoxStartMinute.setBounds(350, 180, 40, 20);
 		for(int i=0; i<=59; i++) {
 			comboBoxStartMinute.addItem(i);
 		}
 		panel.add(comboBoxStartMinute);
 		
-		this.comboBoxEndDay.setBounds(80, 165, 40, 20);
+		this.comboBoxEndDay.setBounds(90, 210, 40, 20);
 		for(int i=1; i<=31; i++) {
 			comboBoxEndDay.addItem(i);
 		}
 		panel.add(comboBoxEndDay);
 		
-		this.comboBoxEndMonth.setBounds(130, 165, 40, 20);
+		this.comboBoxEndMonth.setBounds(150, 210, 40, 20);
 		for(int i=1; i<=12; i++) {
 			comboBoxEndMonth.addItem(i);
 		}
 		panel.add(comboBoxEndMonth);
 		
-		this.comboBoxEndYear.setBounds(180, 165, 60, 20);
+		this.comboBoxEndYear.setBounds(210, 210, 60, 20);
 		for(int i=Year.now().getValue(); i<(Year.now().getValue())+20; i++){
 			comboBoxEndYear.addItem(i);
 		}
 		panel.add(comboBoxEndYear);
 		
-		this.comboBoxEndHour.setBounds(250, 165, 40, 20);
+		this.comboBoxEndHour.setBounds(290, 210, 40, 20);
 		for(int i=1; i<=24; i++) {
 			comboBoxEndHour.addItem(i);
 		}
 		panel.add(comboBoxEndHour);
 		
-		this.comboBoxEndMinute.setBounds(300, 165, 40, 20);
+		this.comboBoxEndMinute.setBounds(350, 210, 40, 20);
 		for(int i=0; i<=59; i++) {
 			comboBoxEndMinute.addItem(i);
 		}
 		panel.add(comboBoxEndMinute);
 		
-		this.buttonAdd.setBounds(20, 200, 80, 30);
+		this.buttonAdd.setBounds(500, 20, 100, 30);
 		panel.add(buttonAdd);
 		
-		this.buttonUpdate.setBounds(120, 200, 80, 30);
+		this.buttonUpdate.setBounds(500, 60, 100, 30);
 		panel.add(buttonUpdate);
 		
-		this.buttonDelete.setBounds(220, 200, 80, 30);
+		this.buttonDelete.setBounds(500, 100, 100, 30);
 		panel.add(buttonDelete);
 		
-		this.buttonSearch.setBounds(320, 200, 80, 30);
+		this.buttonSearch.setBounds(500, 140, 100, 30);
 		panel.add(buttonSearch);
 		
-		this.buttonViewTrips.setBounds(420, 200, 100, 30);
+		this.buttonViewTrips.setBounds(500, 180, 100, 30);
 		panel.add(buttonViewTrips);
 		
-		this.buttonReset.setBounds(540, 200, 80, 30);
+		this.buttonReset.setBounds(500, 220, 100, 30);
 		panel.add(buttonReset);
 		
-		this.buttonExit.setBounds(640, 200, 80, 30);
+		this.buttonExit.setBounds(500, 260, 100, 30);
 		panel.add(buttonExit);
 		
 		buttonAdd.addActionListener(this);
@@ -285,11 +311,11 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 															endDate, 
 															Long.parseLong(textFieldKM.getText()));
 					newTrip.insert(trip);
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "New trip is added!");
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е добавено!");
 				} catch (TripsException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
 				} catch (NumberFormatException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Fill empty fields!");
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Попълни празните полета!");
 				}
 			}
 		});
@@ -322,11 +348,11 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 															Long.parseLong(textFieldKM.getText()));
 					
 					newTrip.update(trip);
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Trip is updated!");
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е променено!");
 				} catch (TripsException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
 				} catch (NumberFormatException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Fill empty fields!");
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Попълни празните полета!");
 				}
 			}
 		});
@@ -336,7 +362,7 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 			public void actionPerformed(ActionEvent e) {
 				try{
 					newTrip.delete(Integer.parseInt(textFieldTripID.getText()));
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Trip is deleted!");
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е изтрито!");
 				} catch(TripsException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
 				}
@@ -377,9 +403,9 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 		buttonViewTrips.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String buttons[] = {"Make report", "View all"};
+				String buttons[] = {"Изведи за един", "Изведи всички"};
 				
-				int response = JOptionPane.showOptionDialog(UserInterfaceTrips.this, "Do you want to open report or all", "Choise", 
+				int response = JOptionPane.showOptionDialog(UserInterfaceTrips.this, "Направи отчет за един или за всички?", "Choose", 
 						JOptionPane.OK_OPTION, 0, null, buttons, buttons.length);
 				
 			

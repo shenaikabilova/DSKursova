@@ -14,8 +14,8 @@ import javax.swing.table.AbstractTableModel;
 @SuppressWarnings("serial")
 public class TableModelTrips extends AbstractTableModel {
 	private Object[][] tableTrip;
-	private String[] columnName = {"TRIP_ID", "DRIVER_FIRST_NAME", "DRIVER_LAST_NAME", "DRIVER_LICENSE", 
-								   "DRIVER_EGN", "VEHICLE_REGISTRATION_NUMBER", "START_DATE", "END_DATE", "KM"};
+	private String[] columnName = {"ID", "Име", "Фамилия", "Категория", 
+								   "ЕГН", "Регистрационен №", "Начална дата", "Крайна дата", "Км"};
 
 	public TableModelTrips (TripsDAO trips) {
 		List<Trips> trip = trips.loadAll();

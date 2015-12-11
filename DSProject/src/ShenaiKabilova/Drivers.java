@@ -42,18 +42,15 @@ public class Drivers {
 	public void setDriverLicense(String driverLicense) {
 		this.driverLicense = driverLicense;
 	}
-	
 	public String getPassword() {
 		return password;
 	}
 	public void setDriverID(String password) {
 		this.password = password;
 	}
-
 	public String getEgn() {
 		return egn;
 	}
-
 	public void setEgn(String egn) {
 		this.egn = egn;
 	}

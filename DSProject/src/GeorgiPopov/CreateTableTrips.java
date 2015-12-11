@@ -20,7 +20,7 @@ public class CreateTableTrips extends JFrame implements Runnable, ActionListener
 	private JTable tableTrip;
 	
 	public CreateTableTrips () {
-		JFrame frame = new JFrame("Trips");
+		JFrame frame = new JFrame("ײÿכמסעום מעקוע");
 		
 		TripsDAO trips = new TripsDaoImpl();
 		AbstractTableModel tableModel = new TableModelTrips(trips);

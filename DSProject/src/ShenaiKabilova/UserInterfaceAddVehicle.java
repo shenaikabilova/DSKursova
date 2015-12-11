@@ -1,6 +1,10 @@
 package ShenaiKabilova;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.time.Year;
 import java.util.Date;
 
@@ -26,46 +30,46 @@ import Other.Validate;
 public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionListener{
 	private JPanel panel;
 	
-	private JLabel labelTypeVehicle = new JLabel("Type vehicle: ");
-	private JLabel labelRegNumber = new JLabel("Registration Number: ");
-	private JLabel labelYearVehicle = new JLabel("Year's vehicle: ");
-	private JLabel labelColor = new JLabel("Color: ");
-	private JLabel labelNumberPlaces = new JLabel("Number places: ");
-	private JLabel labelKM = new JLabel("KM: ");
-	private JLabel labelRepairCount = new JLabel("Repair count: ");
-	private JLabel labelDriverLicense = new JLabel("License: ");
-	private JLabel labelDay = new JLabel("Day:");
-	private JLabel labelMonth = new JLabel("Month:");
-	private JLabel labelYear = new JLabel("Year:");
-	private JLabel labelLastRepair = new JLabel("Last repair:");
+	private JLabel labelTypeVehicle = new JLabel("Вид: ");
+	private JLabel labelRegNumber = new JLabel("Регистрационен номер: ");
+	private JLabel labelYearVehicle = new JLabel("Година: ");
+	private JLabel labelNumberPlaces = new JLabel("Брой места: ");
+	private JLabel labelKM = new JLabel("км: ");
+	private JLabel labelRepairCount = new JLabel("Брой ремонти: ");
+	private JLabel labelDriverLicense = new JLabel("Категория: ");
+	private JLabel labelDay = new JLabel("Ден:");
+	private JLabel labelMonth = new JLabel("Месец:");
+	private JLabel labelYear = new JLabel("Година:");
+	private JLabel labelLastRepair = new JLabel("Последен ремонт:");
 	
-	private JTextField textFieldTypeVehicle = new JTextField("");
 	private JTextField textFieldRegNumber = new JTextField("");
 	private JTextField textFieldYearVehicle = new JTextField("");
-	private JTextField textFieldColor = new JTextField("");
 	private JTextField textFieldNumberPlaces = new JTextField("");
 	private JTextField textFieldKM = new JTextField("");
 	private JTextField textFieldRepairCount = new JTextField("");
 	
-	private String[] license = {"A", "B", "C", "D", "BE", "CE", "DE", "T", "A"};
-
-	private JComboBox<String> comboboxLicense = new JComboBox<String>(license);
+	private String[] license = {"A", "B", "C", "D", "BE", "CE", "DE", "T", "M"};
+	private String[] vehicleTypes = {"мотор", "автомобил", "камион", "автобус", "кола с ремарке", "камион с ремарке",
+			"автобус с ремарке", "тир", "мотопед"};
+	
+	private JComboBox<String> comboBoxTypeVehicle = new JComboBox<String>(vehicleTypes);
+	private JTextField textFieldLicense = new JTextField();
 	private JComboBox<Integer> comboBoxDays = new JComboBox<Integer>();
 	private JComboBox<Integer> comboBoxMonths = new JComboBox<Integer>();
 	private JComboBox<Integer> comboBoxYears = new JComboBox<Integer>();
 	
-	private JButton buttonCreate = new JButton("Create");
-	private JButton buttonDelete = new JButton("Delete");
-	private JButton buttonUpdate = new JButton("Update");
-	private JButton buttonSearch = new JButton("Search");
-	private JButton buttonReset = new JButton("Reset");
-	private JButton buttonViewTable = new JButton("View table");
-	private JButton buttonExit = new JButton("Exit");
+	private JButton buttonCreate = new JButton("Добави");
+	private JButton buttonDelete = new JButton("Изтрий");
+	private JButton buttonUpdate = new JButton("Промени");
+	private JButton buttonSearch = new JButton("Намери");
+	private JButton buttonReset = new JButton("Изчисти");
+	private JButton buttonViewTable = new JButton("Изведи");
+	private JButton buttonExit = new JButton("Изход");
  	
 	private VehicleDAO vehicle = new VehicleDaoImpl();
 	
 	public UserInterfaceAddVehicle() {
-		setTitle("Add vehicle");
+		setTitle("Добавете превозно средство");
 		setSize(600, 450);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -84,71 +88,164 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		this.labelYearVehicle.setBounds(20, 80, 150, 30);
 		panel.add(labelYearVehicle);
 		
-		this.labelColor.setBounds(20, 110, 150, 30);
-		panel.add(labelColor);
-		
-		this.labelNumberPlaces.setBounds(20, 140, 150, 30);
+		this.labelNumberPlaces.setBounds(20, 110, 150, 30);
 		panel.add(labelNumberPlaces);
 		
-		this.labelKM.setBounds(20, 170, 150, 30);
+		this.labelKM.setBounds(20, 140, 150, 30);
 		panel.add(labelKM);
 		
-		this.labelRepairCount.setBounds(20, 200, 150, 30);
+		this.labelRepairCount.setBounds(20, 170, 150, 30);
 		panel.add(labelRepairCount);
 		
-		this.labelDriverLicense.setBounds(20, 230, 150, 30);
+		this.labelDriverLicense.setBounds(20, 200, 150, 30);
 		panel.add(labelDriverLicense);
 		
-		this.labelLastRepair.setBounds(20, 260, 150, 30);
+		this.labelLastRepair.setBounds(20, 230, 150, 30);
 		panel.add(labelLastRepair);
 		
-		this.labelDay.setBounds(150, 260, 150, 30);
+		this.labelDay.setBounds(150, 230, 150, 30);
 		panel.add(labelDay);
 		
-		this.labelMonth.setBounds(210, 260, 150, 30);
+		this.labelMonth.setBounds(210, 230, 150, 30);
 		panel.add(labelMonth);
 		
-		this.labelYear.setBounds(270, 260, 150, 30);
+		this.labelYear.setBounds(270, 230, 150, 30);
 		panel.add(labelYear);
 		
-		this.textFieldTypeVehicle.setBounds(150, 20, 150, 25);
-		panel.add(textFieldTypeVehicle);
+		this.comboBoxTypeVehicle.setBounds(170, 20, 150, 25);
+		comboBoxTypeVehicle.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				int a = comboBoxTypeVehicle.getSelectedIndex();
+				for(int i=0; i<license.length; i++) {
+					if(i==a) {
+						textFieldLicense.setText(license[i]);
+					}
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
+		comboBoxTypeVehicle.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textFieldRegNumber.requestFocus();
+				}
+			}
+		});
+		panel.add(comboBoxTypeVehicle);
 		
-		this.textFieldRegNumber.setBounds(150, 50, 150, 25);
+		this.textFieldRegNumber.setBounds(170, 50, 150, 25);
+		textFieldRegNumber.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textFieldYearVehicle.requestFocus();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					comboBoxTypeVehicle.requestFocus();
+				}
+			}
+		});
 		panel.add(textFieldRegNumber);
 		
-		this.textFieldYearVehicle.setBounds(150, 80, 150, 25);
+		this.textFieldYearVehicle.setBounds(170, 80, 150, 25);
+		textFieldYearVehicle.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+			    if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+			        getToolkit().beep();
+			        e.consume();
+			    }
+ 
+                if (textFieldYearVehicle.getText().length() == 4) {  
+                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината трябва да е с 4 цифри");
+                        e.consume();// ignore event  
+                }
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textFieldNumberPlaces.requestFocus();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_UP) {
+					textFieldRegNumber.requestFocus();
+				}
+			}
+		});
+		textFieldYearVehicle.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(Integer.parseInt(textFieldYearVehicle.getText()) > Year.now().getValue()) {
+                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината на производство не може да надвишава текущата година");
+                }
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
 		panel.add(textFieldYearVehicle);
 		
-		this.textFieldColor.setBounds(150, 110, 150, 25);
-		panel.add(textFieldColor);
-		
-		this.textFieldNumberPlaces.setBounds(150, 140, 150, 25);
+		this.textFieldNumberPlaces.setBounds(170, 110, 150, 25);
+		textFieldNumberPlaces.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textFieldKM.requestFocus();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					textFieldYearVehicle.requestFocus();
+				}
+			}
+		});
 		panel.add(textFieldNumberPlaces);
 		
-		this.textFieldKM.setBounds(150, 170, 150, 25);
+		this.textFieldKM.setBounds(170, 140, 150, 25);
+		textFieldKM.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textFieldRepairCount.requestFocus();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					textFieldNumberPlaces.requestFocus();
+				}
+			}
+		});
 		panel.add(textFieldKM);
 		
-		this.textFieldRepairCount.setBounds(150, 200, 150, 25);
+		this.textFieldRepairCount.setBounds(170, 170, 150, 25);
+		textFieldRepairCount.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					textFieldKM.requestFocus();
+				}
+			}
+		});
 		panel.add(textFieldRepairCount);
 		
-		this.comboboxLicense.setBounds(150, 230, 150, 25);
-		panel.add(comboboxLicense);
+		this.textFieldLicense.setBounds(170, 200, 40, 25);
+		textFieldLicense.setEnabled(false);
+		panel.add(textFieldLicense);
 		
-		this.comboBoxDays.setBounds(150, 290, 50, 20);
+		this.comboBoxDays.setBounds(150, 260, 50, 20);
 		for(int i=1; i<=31;i++) {
 			comboBoxDays.addItem(i);
 		}
 		panel.add(comboBoxDays);
 		
-		this.comboBoxMonths.setBounds(210, 290, 50, 20);
+		this.comboBoxMonths.setBounds(210, 260, 50, 20);
 		for(int i=1; i<=12; i++) {
 			comboBoxMonths.addItem(i);
 		}
 		panel.add(comboBoxMonths);
 		
-		this.comboBoxYears.setBounds(270, 290, 60, 20);
-		for(int i=Year.now().getValue()-20; i<(Year.now().getValue())+20; i++){
+		this.comboBoxYears.setBounds(270, 260, 60, 20);
+		for(int i=Year.now().getValue()-20; i<=(Year.now().getValue()); i++){
 			comboBoxYears.addItem(i);
 		}
 		panel.add(comboBoxYears);
@@ -198,27 +295,25 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 										 (int)comboBoxDays.getSelectedItem());
 					
 				
-					Vehicles addVehicle = new Vehicles(textFieldTypeVehicle.getText(),
+					Vehicles addVehicle = new Vehicles(comboBoxTypeVehicle.getSelectedItem().toString(),
 													   textFieldRegNumber.getText(),
 													   Integer.parseInt(textFieldYearVehicle.getText()),
-													   textFieldColor.getText(),
 													   Integer.parseInt(textFieldNumberPlaces.getText()),
 													   Integer.parseInt(textFieldKM.getText()),
 													   Integer.parseInt(textFieldRepairCount.getText()),
 													   date,
-													   (String) comboboxLicense.getSelectedItem());
+													   textFieldLicense.getText());
 				
 					if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText()) == false ){
-						JOptionPane.showMessageDialog(null, "Invalid registration number of vehicle!", 
-								"Wrong registracion number", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Невалиден регистрационен №!");
 					} else {
 						vehicle.insert(addVehicle);
-						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Vehicle is added!");
+						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е добавено!");
 					}
 				}catch(VehicleErrorException exc){
 					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exc.getMessage());
 				} catch(NumberFormatException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Fill empty fields!");
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Попълнете празните полета!");
 				}
 			}
 		});
@@ -232,27 +327,25 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 										 (int)comboBoxMonths.getSelectedItem()-1, 
 										 (int)comboBoxDays.getSelectedItem());
 				
-					Vehicles updateVehicle = new Vehicles(textFieldTypeVehicle.getText(),
+					Vehicles updateVehicle = new Vehicles(comboBoxTypeVehicle.getSelectedItem().toString(),
 														  textFieldRegNumber.getText(),
 														  Integer.parseInt(textFieldYearVehicle.getText()),
-														  textFieldColor.getText(),
 														  Integer.parseInt(textFieldNumberPlaces.getText()),
 														  Integer.parseInt(textFieldKM.getText()),
 														  Integer.parseInt(textFieldRepairCount.getText()),
 														  date,
-														  (String) comboboxLicense.getSelectedItem());
+														   textFieldLicense.getText());
 				
 					if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText()) == false ){
-						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Invalid reg number", "Wrong registracion number", 
-								JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Невалиден регистрационен №1");
 					} else {
 						vehicle.update(updateVehicle);
-						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Vehicle is updated!");
+						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е променено!");
 					}
 				}catch (VehicleErrorException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage());
 				} catch(NumberFormatException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Fill empty fields!");
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Попълнете празните полета!");
 				}
 			}
 		});
@@ -262,7 +355,7 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			public void actionPerformed(ActionEvent e) {
 				try{
 					vehicle.delete(textFieldRegNumber.getText());
-					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Vehicle is deleted!");
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е изтрито!");
 				} catch (VehicleErrorException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage());
 				}
@@ -276,16 +369,15 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 				try{
 					Vehicles v = vehicle.search(textFieldRegNumber.getText());
 			
-					textFieldTypeVehicle.setText(v.getTypeVehicle());
+					comboBoxTypeVehicle.setSelectedItem(v.getTypeVehicle());
 					textFieldYearVehicle.setText(Integer.toString(v.getYearVehicle()));
-					textFieldColor.setText(v.getColor());
 					textFieldNumberPlaces.setText(Integer.toString(v.getNumerOfPlaces()));
 					textFieldKM.setText(Long.toString(v.getKm()));
 					textFieldRepairCount.setText(Integer.toString(v.getRepairCount()));
 					comboBoxDays.setSelectedItem(v.getLastRerair().getDate());
 					comboBoxMonths.setSelectedItem(v.getLastRerair().getMonth()+1);
 					comboBoxYears.setSelectedItem(v.getLastRerair().getYear()+1900);
-					comboboxLicense.setSelectedItem(v.getDriverLicense());
+					textFieldLicense.setText(v.getDriverLicense());
 				} catch (VehicleErrorException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage());
 				}
@@ -302,14 +394,13 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		buttonReset.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textFieldTypeVehicle.setText("");
+				comboBoxTypeVehicle.setSelectedItem(1);
 				textFieldRegNumber.setText("");
 				textFieldYearVehicle.setText("");
-				textFieldColor.setText("");
 				textFieldNumberPlaces.setText("");
 				textFieldKM.setText("");
 				textFieldRepairCount.setText("");
-				comboboxLicense.setSelectedItem(1);
+				textFieldLicense.setText("");
 				comboBoxDays.setSelectedItem(1);
 				comboBoxMonths.setSelectedItem(1);
 				comboBoxYears.setSelectedItem(1);

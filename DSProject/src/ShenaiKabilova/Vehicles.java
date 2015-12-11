@@ -11,7 +11,6 @@ public class Vehicles {
 	private String typeVehicle;
 	private String registrationNumber;
 	private int yearVehicle;
-	private String color;
 	private int numberOfPlaces;
 	private long km;
 	private int repairCount;
@@ -19,11 +18,10 @@ public class Vehicles {
 	private String driverLicense;
 	
 	public Vehicles (String typeVehicle, String registrationNumber, int yearVehicle,
-			         String color, int numberOfPlaces, long km, int repairCount, Date lastRepair, String driverLicense) {
+			         int numberOfPlaces, long km, int repairCount, Date lastRepair, String driverLicense) {
 		this.typeVehicle = typeVehicle;
 		this.registrationNumber = registrationNumber;
 		this.yearVehicle = yearVehicle;
-		this.color = color;
 		this.numberOfPlaces = numberOfPlaces;
 		this.km = km;
 		this.repairCount = repairCount;
@@ -52,12 +50,6 @@ public class Vehicles {
 	public void setYearVehicle(int yearVehicle) {
 		this.yearVehicle = yearVehicle;
 	}
-	public String getColor() {
-		return color;
-	}
-	public void setColor(String color) {
-		this.color = color;
-	}
 	public int getNumerOfPlaces() {
 		return numberOfPlaces;
 	}
@@ -82,11 +74,9 @@ public class Vehicles {
 	public void setLastRerair(Date lastRerair) {
 		this.lastRerair = lastRerair;
 	}
-
 	public String getDriverLicense() {
 		return driverLicense;
 	}
-
 	public void setDriverLicense(String driverLicense) {
 		this.driverLicense = driverLicense;
 	}

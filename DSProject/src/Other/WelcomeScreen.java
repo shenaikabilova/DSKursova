@@ -59,6 +59,19 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 		
 		this.textFieldUsername.setBounds(100, 30, 100, 25);
 		textFieldUsername.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+			    if (!((c >= 'а') && (c <= 'я') || (c >= 'А') && (c <= 'Я') || (c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+			        getToolkit().beep();
+			        e.consume();
+			    }
+ 
+                if (textFieldUsername.getText().length() == 10) {  
+                	JOptionPane.showMessageDialog(WelcomeScreen.this, "Максимален брой символи при потребителско име: 10!");
+                        e.consume();// ignore event  
+                }
+			}
+			
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 					password.requestFocus();
@@ -69,6 +82,14 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 		
 		this.password.setBounds(100, 60, 100, 25);
 		password.addKeyListener(new KeyAdapter() {
+			@SuppressWarnings("deprecation")
+			public void keyTyped(KeyEvent e) {
+			    if (password.getText().length() == 8) {  
+                	JOptionPane.showMessageDialog(WelcomeScreen.this, "Паролата трябва да е до 8 символа");
+                        e.consume();// ignore event  
+                }
+			}
+			
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_UP) {
 					textFieldUsername.requestFocus();

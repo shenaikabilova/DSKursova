@@ -2,6 +2,7 @@ package ShenaiKabilova;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -104,7 +105,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 			    }
 			    
 			    if (textFieldFirstName.getText().length() == 15) {  
-                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Годината трябва да е до 15 букви");
+                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Името трябва да е до 15 букви!");
                         e.consume();// ignore event  
                 }
 			}
@@ -113,6 +114,9 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 					textFieldLastName.requestFocus();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					textFieldEgn.requestFocus();
 				}
 			}
 		});
@@ -143,8 +147,8 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 			        e.consume();
 			    }
 			    
-			    if (textFieldFirstName.getText().length() == 15) {  
-                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Годината трябва да е до 15 букви");
+			    if (textFieldLastName.getText().length() == 15) {  
+                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Фамилията трябва да е до 15 букви!");
                         e.consume();// ignore event  
                 }
 			}
@@ -175,7 +179,22 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		panel.add(comboBoxLicense);
 		
 		this.textFieldPassword.setBounds(100, 110, 150, 25);
+		textFieldPassword.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent arg0) {
+				if(textFieldPassword.getText().length() < 4) {
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Паролата не може да е по-малко от 4 символа!");
+				}
+			}
+		});
 		textFieldPassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+			    if (textFieldPassword.getText().length() == 8) {  
+                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Паролата трябва да е до 8 символа!");
+                        e.consume();// ignore event  
+                }
+			}
+			
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 					textFieldEgn.requestFocus();
@@ -206,9 +225,20 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 			}
 		});
 		textFieldEgn.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+			    if (textFieldEgn.getText().length() == 10) {  
+                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "ЕГН трябва да е до 10 цифри!");
+                        e.consume();// ignore event  
+                }
+			}
+			
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_UP) {
 					textFieldPassword.requestFocus();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textFieldFirstName.requestFocus();
 				}
 			}
 		});

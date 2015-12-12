@@ -49,8 +49,9 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 	private JTextField textFieldRepairCount = new JTextField("");
 	
 	private String[] license = {"A", "B", "C", "D", "BE", "CE", "DE", "T", "M"};
-	private String[] vehicleTypes = {"мотор", "автомобил", "камион", "автобус", "кола с ремарке", "камион с ремарке",
+	private String[] vehicleTypes = {"мотор", "автомобил", "камион", "автобус", "автомобил с ремарке", "камион с ремарке",
 			"автобус с ремарке", "тир", "мотопед"};
+	private String[] numberPlaces = {"1", "5", "3", "52", "5", "3", "52", "3", "1"};
 	
 	private JComboBox<String> comboBoxTypeVehicle = new JComboBox<String>(vehicleTypes);
 	private JTextField textFieldLicense = new JTextField();
@@ -113,12 +114,14 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		panel.add(labelYear);
 		
 		this.comboBoxTypeVehicle.setBounds(170, 20, 150, 25);
+		comboBoxTypeVehicle.setSelectedIndex(1);
 		comboBoxTypeVehicle.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
 				int a = comboBoxTypeVehicle.getSelectedIndex();
 				for(int i=0; i<license.length; i++) {
 					if(i==a) {
+						textFieldNumberPlaces.setText(numberPlaces[i]);
 						textFieldLicense.setText(license[i]);
 					}
 				}
@@ -134,12 +137,23 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 					textFieldRegNumber.requestFocus();
 				}
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					textFieldRepairCount.requestFocus();
+				}
 			}
 		});
 		panel.add(comboBoxTypeVehicle);
 		
 		this.textFieldRegNumber.setBounds(170, 50, 150, 25);
 		textFieldRegNumber.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (textFieldRegNumber.getText().length() == 8) {  
+                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Регистрационният номер трябва да е максимално 8 символа!");
+                        e.consume();// ignore event  
+                }
+			}
+			
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 					textFieldYearVehicle.requestFocus();
@@ -162,7 +176,7 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			    }
  
                 if (textFieldYearVehicle.getText().length() == 4) {  
-                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината трябва да е с 4 цифри");
+                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината трябва да е с 4 цифри!");
                         e.consume();// ignore event  
                 }
 			}
@@ -170,7 +184,7 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-					textFieldNumberPlaces.requestFocus();
+					textFieldKM.requestFocus();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
 					textFieldRegNumber.requestFocus();
@@ -180,8 +194,11 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		textFieldYearVehicle.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
+				if (Integer.parseInt(textFieldYearVehicle.getText()) < Year.now().getValue() - 20) {
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината на производство не може да е по-малка от: " + (Year.now().getValue() - 20));
+				}
 				if(Integer.parseInt(textFieldYearVehicle.getText()) > Year.now().getValue()) {
-                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината на производство не може да надвишава текущата година");
+                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината на производство не може да надвишава: " + Year.now().getValue());
                 }
 			}
 			
@@ -192,27 +209,32 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		});
 		panel.add(textFieldYearVehicle);
 		
-		this.textFieldNumberPlaces.setBounds(170, 110, 150, 25);
-		textFieldNumberPlaces.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-					textFieldKM.requestFocus();
-				}
-				if(e.getKeyCode() == KeyEvent.VK_UP) {
-					textFieldYearVehicle.requestFocus();
-				}
-			}
-		});
+		this.textFieldNumberPlaces.setBounds(170, 110, 40, 25);
+		textFieldNumberPlaces.setEnabled(false);
 		panel.add(textFieldNumberPlaces);
 		
 		this.textFieldKM.setBounds(170, 140, 150, 25);
 		textFieldKM.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+			    if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+			        getToolkit().beep();
+			        e.consume();
+			    }
+ 
+                if (textFieldKM.getText().length() == 6) {  
+                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Kилометражът не може да надвишава 6 цифри!");
+                        e.consume();// ignore event  
+                }
+			}
+			
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
 					textFieldRepairCount.requestFocus();
 				}
 				if(e.getKeyCode() == KeyEvent.VK_UP) {
-					textFieldNumberPlaces.requestFocus();
+					textFieldYearVehicle.requestFocus();
 				}
 			}
 		});
@@ -220,9 +242,25 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		
 		this.textFieldRepairCount.setBounds(170, 170, 150, 25);
 		textFieldRepairCount.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+			    if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+			        getToolkit().beep();
+			        e.consume();
+			    }
+			    
+			    if(textFieldRepairCount.getText().length() == 3) {
+			    	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Броят ремонти не може да надвишава 999!");
+			    }
+			}
+			
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_UP) {
 					textFieldKM.requestFocus();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					comboBoxTypeVehicle.requestFocus();
 				}
 			}
 		});
@@ -337,7 +375,7 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 														   textFieldLicense.getText());
 				
 					if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText()) == false ){
-						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Невалиден регистрационен №1");
+						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Невалиден регистрационен №!");
 					} else {
 						vehicle.update(updateVehicle);
 						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е променено!");

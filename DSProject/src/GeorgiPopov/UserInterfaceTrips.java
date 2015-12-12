@@ -155,6 +155,20 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 		
 		this.textFieldKM.setBounds(300, 120, 60, 25);
 		textFieldKM.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+				    e.consume();
+				}
+	 
+	            if (textFieldKM.getText().length() == 6) {
+	            	JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Kилометражът не може да надвишава 6 цифри!");
+	                e.consume();// ignore event  
+	            }
+			}
+				
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					textFieldTripID.requestFocus();
@@ -168,10 +182,26 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 		
 		this.textFieldTripID.setBounds(400, 120, 60, 25);
 		textFieldTripID.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+					getToolkit().beep();
+				    e.consume();
+				}
+			}
+			
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_LEFT) {
 					textFieldKM.requestFocus();
 				}
+				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					comboBoxRegNumber.requestFocus();
+				}
+				
+				if (textFieldTripID.getText().length() == 6) {
+	            	JOptionPane.showMessageDialog(UserInterfaceTrips.this, "ID не може да надвишава 6 цифри!");
+	                e.consume();// ignore event  
+	            }
 			}
 		});
 		panel.add(textFieldTripID);
@@ -184,6 +214,9 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					textFieldKM.requestFocus();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+					textFieldTripID.requestFocus();
 				}
 			}
 		});
@@ -405,7 +438,7 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 			public void actionPerformed(ActionEvent e) {
 				String buttons[] = {"Изведи за един", "Изведи всички"};
 				
-				int response = JOptionPane.showOptionDialog(UserInterfaceTrips.this, "Направи отчет за един или за всички?", "Choose", 
+				int response = JOptionPane.showOptionDialog(UserInterfaceTrips.this, "Направи отчет за един или за всички?", "Избор", 
 						JOptionPane.OK_OPTION, 0, null, buttons, buttons.length);
 				
 			

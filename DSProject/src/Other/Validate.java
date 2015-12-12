@@ -36,7 +36,7 @@ public class Validate {
                 throw new Exception("Месецът трябва да бъде между 1...12!");
         }
         if(day < 1 || day > 31) {
-                throw new Exception("Датата трябва да бъде между 1...31");
+                throw new Exception("Датата трябва да бъде между 1...31!");
         }
          
         for(int i = 0; i < egn.length() - 1; i++) {
@@ -50,6 +50,6 @@ public class Validate {
     }
 	
 	public boolean isValidRegNumberVehicle (String regNumber){
-		return regNumber.matches("^[Е|А|В|ВТ|ВН|ВР|ЕВ|ТХ|К|КН|ОВ|М|РА|РК|ЕН|РВ|РР|Р|СС|СН|СМ|СО|[С|СА|СВ]|СТ|Т|Х|Н|У][1-9]{4}[A-Z]{1,2}");
+		return regNumber.matches("^[Е|А|В|ВТ|ВН|ВР|ЕВ|ТХ|К|КН|ОВ|М|РА|РК|ЕН|РВ|РР|Р|СС|СН|СМ|СО|[С|СА|СВ]|СТ|Т|Х|Н|У][1-9]{4}[А-Я]{1,2}");
 	}
 }

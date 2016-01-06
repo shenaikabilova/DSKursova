@@ -1,12 +1,14 @@
 package ShenaiKabilova;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.Year;
 import java.util.Date;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,6 +17,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import Other.Validate;
 
@@ -65,9 +71,14 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 	private JButton buttonSearch = new JButton("Намери");
 	private JButton buttonReset = new JButton("Изчисти");
 	private JButton buttonViewTable = new JButton("Изведи");
-	private JButton buttonExit = new JButton("Изход");
+	private JButton buttonExit = new JButton("Край");
  	
 	private VehicleDAO vehicle = new VehicleDaoImpl();
+	
+	private JDatePickerImpl datePicker;
+	private Properties p;
+	private UtilDateModel dateModel;
+	private JDatePanelImpl datePanel;
 	
 	public UserInterfaceAddVehicle() {
 		setTitle("Добавете превозно средство");
@@ -79,6 +90,18 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		this.panel = new JPanel();
 		panel.setLayout(null);
 		this.getContentPane().add(panel);
+		
+		//
+
+		p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		dateModel = new UtilDateModel();
+		datePanel = new JDatePanelImpl(dateModel, p);
+		datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+		panel.add(datePicker);
+		//
 		
 		this.labelTypeVehicle.setBounds(20, 20, 150, 30);
 		panel.add(labelTypeVehicle);
@@ -134,11 +157,8 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		});
 		comboBoxTypeVehicle.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_ENTER) {
 					textFieldRegNumber.requestFocus();
-				}
-				if(e.getKeyCode() == KeyEvent.VK_UP) {
-					textFieldRepairCount.requestFocus();
 				}
 			}
 		});
@@ -149,13 +169,15 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if (textFieldRegNumber.getText().length() == 8) {  
-                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Регистрационният номер трябва да е максимално 8 символа!");
+					textFieldRegNumber.requestFocus();
+                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Регистрационният номер трябва да е максимално 8 символа!", 
+                			"Надвишен брой символи", JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
 			}
 			
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_ENTER) {
 					textFieldYearVehicle.requestFocus();
 				}
 				if(e.getKeyCode() == KeyEvent.VK_UP) {
@@ -163,6 +185,15 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 				}
 			}
 		});
+		textFieldRegNumber.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText())!=true) {
+					textFieldRegNumber.requestFocus();
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Въведеният регистрационен номер не може да съществува!",
+							"Грешен регистрационен номер", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});	
 		panel.add(textFieldRegNumber);
 		
 		this.textFieldYearVehicle.setBounds(170, 80, 150, 25);
@@ -176,14 +207,16 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			    }
  
                 if (textFieldYearVehicle.getText().length() == 4) {  
-                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината трябва да е с 4 цифри!");
+                	textFieldYearVehicle.requestFocus();
+                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината трябва да е с 4 цифри!",
+                			"Невалидна година", JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
 			}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_ENTER) {
 					textFieldKM.requestFocus();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -195,10 +228,14 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (Integer.parseInt(textFieldYearVehicle.getText()) < Year.now().getValue() - 20) {
-					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината на производство не може да е по-малка от: " + (Year.now().getValue() - 20));
+					textFieldYearVehicle.requestFocus();
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината на производство не може да е по-малка от: " + (Year.now().getValue() - 20),
+							"Невалидна година на производство", JOptionPane.WARNING_MESSAGE);
 				}
 				if(Integer.parseInt(textFieldYearVehicle.getText()) > Year.now().getValue()) {
-                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината на производство не може да надвишава: " + Year.now().getValue());
+					textFieldYearVehicle.requestFocus();
+                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината на производство не може да надвишава: " + Year.now().getValue(),
+                			"Невалидна година на производсвто", JOptionPane.WARNING_MESSAGE);
                 }
 			}
 			
@@ -224,13 +261,15 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			    }
  
                 if (textFieldKM.getText().length() == 6) {  
-                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Kилометражът не може да надвишава 6 цифри!");
+                	textFieldKM.requestFocus();
+                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Kилометражът не може да надвишава 6 цифри!",
+                			"Невалидно въведен километраж", JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
 			}
 			
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_ENTER) {
 					textFieldRepairCount.requestFocus();
 				}
 				if(e.getKeyCode() == KeyEvent.VK_UP) {
@@ -251,16 +290,16 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			    }
 			    
 			    if(textFieldRepairCount.getText().length() == 3) {
-			    	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Броят ремонти не може да надвишава 999!");
+			    	textFieldRepairCount.requestFocus();
+			    	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Броят ремонти не може да надвишава 999!",
+			    			"Невалиден брой ремонти", JOptionPane.WARNING_MESSAGE);
+			    	e.consume();
 			    }
 			}
 			
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_UP) {
 					textFieldKM.requestFocus();
-				}
-				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-					comboBoxTypeVehicle.requestFocus();
 				}
 			}
 		});
@@ -343,10 +382,13 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 													   textFieldLicense.getText());
 				
 					if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText()) == false ){
-						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Невалиден регистрационен №!");
+						textFieldRegNumber.requestFocus();
+						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Въведеният регистрационен номер е невалидно",
+								"Невалиден регистрационен №!", JOptionPane.ERROR_MESSAGE);
 					} else {
 						vehicle.insert(addVehicle);
-						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е добавено!");
+						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е добавено!",
+								"Добавено",JOptionPane.OK_OPTION);
 					}
 				}catch(VehicleErrorException exc){
 					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exc.getMessage());
@@ -375,15 +417,18 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 														   textFieldLicense.getText());
 				
 					if(new Validate().isValidRegNumberVehicle(textFieldRegNumber.getText()) == false ){
-						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Невалиден регистрационен №!");
+						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Въведеният регистрационен № е невалиден!",
+								"Невалиден регистрационен №!", JOptionPane.ERROR_MESSAGE);
 					} else {
 						vehicle.update(updateVehicle);
-						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е променено!");
+						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е променено!",
+								"Промяна", JOptionPane.OK_OPTION);
 					}
 				}catch (VehicleErrorException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage());
 				} catch(NumberFormatException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Попълнете празните полета!");
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Попълнете празните полета!",
+							"Липсваща информация", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -393,7 +438,8 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			public void actionPerformed(ActionEvent e) {
 				try{
 					vehicle.delete(textFieldRegNumber.getText());
-					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е изтрито!");
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е изтрито!",
+							"Изтриване", JOptionPane.OK_OPTION);
 				} catch (VehicleErrorException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage());
 				}
@@ -459,5 +505,6 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 	@Override
 	public void run() {
 		setVisible(true);
+		comboBoxTypeVehicle.requestFocus();
 	}
 }

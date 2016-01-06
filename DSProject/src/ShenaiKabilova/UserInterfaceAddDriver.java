@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Other.Validate;
@@ -38,7 +39,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 	
 	private JTextField textFieldFirstName = new JTextField("");
 	private JTextField textFieldLastName = new JTextField("");
-	private JTextField textFieldPassword = new JTextField("");
+	private JPasswordField textFieldPassword = new JPasswordField();
 	private JTextField textFieldEgn = new JTextField("");
 	
 	private String[] license = {"A", "B", "C", "D", "BE", "CE", "DE", "T", "A"};
@@ -50,7 +51,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 	private JButton buttonSearch = new JButton("Намери");
 	private JButton buttonReset = new JButton("Изчисти");
 	private JButton buttonViewTable = new JButton("Изведи");
-	private JButton buttonExit = new JButton("Изход");
+	private JButton buttonExit = new JButton("Край");
 	
 	private DriverDAO driver = new DriverDaoImpl();
 	
@@ -105,18 +106,16 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 			    }
 			    
 			    if (textFieldFirstName.getText().length() == 15) {  
-                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Името трябва да е до 15 букви!");
+                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Името трябва да е до 15 букви!",
+                			"Достигнат лимит на въвеждане", JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
 			}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_ENTER) {
 					textFieldLastName.requestFocus();
-				}
-				if(e.getKeyCode() == KeyEvent.VK_UP) {
-					textFieldEgn.requestFocus();
 				}
 			}
 		});
@@ -148,14 +147,15 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 			    }
 			    
 			    if (textFieldLastName.getText().length() == 15) {  
-                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Фамилията трябва да е до 15 букви!");
+                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Фамилията трябва да е до 15 букви!",
+                			"Достигнат лимит при въвеждане", JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
 			}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_ENTER) {
 					comboBoxLicense.requestFocus();
 				}
 				if(e.getKeyCode() == KeyEvent.VK_UP) {
@@ -168,7 +168,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		this.comboBoxLicense.setBounds(100, 80, 150, 25);
 		comboBoxLicense.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_ENTER) {
 					textFieldPassword.requestFocus();
 				}
 				if(e.getKeyCode() == KeyEvent.VK_UP) {
@@ -182,7 +182,8 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		textFieldPassword.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent arg0) {
 				if(textFieldPassword.getText().length() < 4) {
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Паролата не може да е по-малко от 4 символа!");
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Паролата не може да е по-малко от 4 символа!",
+							"Парола", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -190,17 +191,15 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 			@Override
 			public void keyTyped(KeyEvent e) {
 			    if (textFieldPassword.getText().length() == 8) {  
-                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Паролата трябва да е до 8 символа!");
+                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Паролата трябва да е до 8 символа!",
+                			"Парола", JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
 			}
 			
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_ENTER) {
 					textFieldEgn.requestFocus();
-				}
-				if(e.getKeyCode() == KeyEvent.VK_UP) {
-					comboBoxLicense.requestFocus();
 				}
 			}
 		});
@@ -228,7 +227,8 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 			@Override
 			public void keyTyped(KeyEvent e) {
 			    if (textFieldEgn.getText().length() == 10) {  
-                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "ЕГН трябва да е до 10 цифри!");
+                	JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "ЕГН трябва да е до 10 цифри!",
+                			"Достигнат лимит", JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
 			}
@@ -293,11 +293,13 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 					if(new Validate().isvalidEGN(textFieldEgn.getText())==true);
 					
 					driver.insert(addDriver);
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е добавен!");
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е добавен!",
+							"Добавяне", JOptionPane.OK_OPTION);
 				}catch (DriverErrorException e1) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
 				} catch (NumberFormatException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Попълнете празните полета!");
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Попълнете празните полета!",
+							"Липсващи данни", JOptionPane.WARNING_MESSAGE);
 				}catch (Exception e1) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
 				}
@@ -315,11 +317,13 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 				
 					driver.update(updateDriver);
 				
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е променен!");
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е променен!",
+							"Промяна", JOptionPane.OK_OPTION);
 				} catch (DriverErrorException e1) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
 				} catch (NumberFormatException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Попълнете празните полета!");
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Попълнете празните полета!",
+							"Липсващи данни", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -329,7 +333,8 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 			public void actionPerformed(ActionEvent e) {
 				try{
 					driver.delete(textFieldEgn.getText());
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е изтрит!");
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е изтрит!",
+							"Изтриване", JOptionPane.OK_OPTION);
 				} catch(DriverErrorException e1) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
 				}

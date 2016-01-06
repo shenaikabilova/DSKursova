@@ -73,7 +73,7 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 	private JButton buttonSearch = new JButton("Намери");
 	private JButton buttonViewTrips = new JButton("Изведи");
 	private JButton buttonReset = new JButton("Изчисти");
-	private JButton buttonExit = new JButton("Изход");
+	private JButton buttonExit = new JButton("Край");
 	
 	private CurrentStateUsername current = new CurrentStateUsername();
 	private TripsDAO newTrip = new TripsDaoImpl();
@@ -164,7 +164,8 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 				}
 	 
 	            if (textFieldKM.getText().length() == 6) {
-	            	JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Kилометражът не може да надвишава 6 цифри!");
+	            	JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Kилометражът не може да надвишава 6 цифри!",
+	            			"Достигнат лимит на въвеждане", JOptionPane.WARNING_MESSAGE);
 	                e.consume();// ignore event  
 	            }
 			}
@@ -199,7 +200,8 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 				}
 				
 				if (textFieldTripID.getText().length() == 6) {
-	            	JOptionPane.showMessageDialog(UserInterfaceTrips.this, "ID не може да надвишава 6 цифри!");
+	            	JOptionPane.showMessageDialog(UserInterfaceTrips.this, "ID не може да надвишава 6 цифри!",
+	            			"Достигнат лимит на въвеждане", JOptionPane.WARNING_MESSAGE);
 	                e.consume();// ignore event  
 	            }
 			}
@@ -344,11 +346,13 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 															endDate, 
 															Long.parseLong(textFieldKM.getText()));
 					newTrip.insert(trip);
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е добавено!");
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е добавено!", 
+							"Добавяне", JOptionPane.OK_OPTION);
 				} catch (TripsException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
 				} catch (NumberFormatException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Попълни празните полета!");
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Попълни празните полета!",
+							"Липсваща информация", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -381,11 +385,13 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 															Long.parseLong(textFieldKM.getText()));
 					
 					newTrip.update(trip);
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е променено!");
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е променено!",
+							"Промяна", JOptionPane.OK_OPTION);
 				} catch (TripsException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
 				} catch (NumberFormatException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Попълни празните полета!");
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Попълни празните полета!",
+							"Липсваща информация", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -395,7 +401,8 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 			public void actionPerformed(ActionEvent e) {
 				try{
 					newTrip.delete(Integer.parseInt(textFieldTripID.getText()));
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е изтрито!");
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е изтрито!",
+							"Изтриване", JOptionPane.OK_OPTION);
 				} catch(TripsException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
 				}

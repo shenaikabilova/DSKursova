@@ -120,11 +120,12 @@ public class DriverDaoImpl implements DriverDAO {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			PreparedStatement pr = connection.prepareStatement("UPDATE DRIVERS SET DRIVER_FIRST_NAME = ?,"
-					+ "DRIVER_LAST_NAME = ?, DRIVER_LICENSE = ?, PASSWORD = ? WHERE DRIVER_EGN = " + driver.getEgn());
+					+ "DRIVER_LAST_NAME = ?, DRIVER_LICENSE = ?, PASSWORD = ?, DRIVER_EGN = ? WHERE DRIVER_EGN = '" + driver.getEgn()+"'");
 			
 			pr.setString(1, driver.getDriverFirstName());
 			pr.setString(2, driver.getDriverLastName());
 			pr.setString(3, driver.getDriverLicense());
+			pr.setString(4, driver.getPassword());
 			pr.setString(5, driver.getEgn());
 			
 			pr.executeUpdate();

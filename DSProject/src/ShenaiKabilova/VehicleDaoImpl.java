@@ -94,7 +94,8 @@ public class VehicleDaoImpl implements VehicleDAO{
 			pr.setInt(4, vehicle.getNumerOfPlaces());
 			pr.setLong(5, vehicle.getKm());
 			pr.setInt(6, vehicle.getRepairCount());
-			pr.setDate(7, (Date) vehicle.getLastRerair());
+			
+			pr.setDate(7,  new Date(vehicle.getLastRerair().getTime()));
 			pr.setString(8, vehicle.getDriverLicense());
 			
 			pr.executeUpdate();

@@ -20,10 +20,6 @@ import ShenaiKabilova.DriverErrorException;
 import ShenaiKabilova.UserInterface;
 
 /**
- * 
- */
-
-/**
  * @author shenaikabilova
  *
  */
@@ -38,7 +34,7 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 	private JPasswordField password = new JPasswordField();
 	
 	private JButton buttonEnter = new JButton("Вход");
-	private JButton buttonExit = new JButton("Изход");
+	private JButton buttonExit = new JButton("Край");
 	
 	public WelcomeScreen() {
 		setTitle("Admin panel");
@@ -67,13 +63,14 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 			    }
  
                 if (textFieldUsername.getText().length() == 10) {  
-                	JOptionPane.showMessageDialog(WelcomeScreen.this, "Максимален брой символи при потребителско име: 10!");
+                	JOptionPane.showMessageDialog(WelcomeScreen.this, "Максимален брой символи при потребителско име: 10!", "Надвишен брой символи",
+                			JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
 			}
 			
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_ENTER) {
 					password.requestFocus();
 				}
 			}
@@ -85,15 +82,10 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 			@SuppressWarnings("deprecation")
 			public void keyTyped(KeyEvent e) {
 			    if (password.getText().length() == 8) {  
-                	JOptionPane.showMessageDialog(WelcomeScreen.this, "Паролата трябва да е до 8 символа");
+                	JOptionPane.showMessageDialog(WelcomeScreen.this, "Паролата трябва да е до 8 символа",
+                			"Надвишен брой символи", JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
-			}
-			
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_UP) {
-					textFieldUsername.requestFocus();
-				}
 			}
 		});
 		panel.add(password);
@@ -135,7 +127,8 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 					}
 				}
 				else{
-					JOptionPane.showMessageDialog(WelcomeScreen.this, "Грешно потребителско име или парола!");
+					JOptionPane.showMessageDialog(WelcomeScreen.this, "Грешно въвеждане при потребителско име или парола!", 
+							"Грешно потребителско име или парола", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

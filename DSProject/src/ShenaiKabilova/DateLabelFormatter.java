@@ -13,6 +13,7 @@ import javax.swing.JFormattedTextField.AbstractFormatter;
  * @author shenaikabilova
  *
  */
+@SuppressWarnings("serial")
 public class DateLabelFormatter extends AbstractFormatter {
 
 	    private String datePattern = "yyyy-MM-dd";

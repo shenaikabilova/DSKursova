@@ -8,7 +8,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.Year;
 import java.util.Date;
-import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,10 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
 
 import Other.Validate;
 
@@ -33,7 +28,7 @@ import Other.Validate;
  *
  */
 @SuppressWarnings("serial")
-public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionListener{
+public class UserInterfaceAddVehicle extends JFrame implements Runnable{	
 	private JPanel panel;
 	
 	private JLabel labelTypeVehicle = new JLabel("Вид: ");
@@ -75,11 +70,6 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
  	
 	private VehicleDAO vehicle = new VehicleDaoImpl();
 	
-	private JDatePickerImpl datePicker;
-	private Properties p;
-	private UtilDateModel dateModel;
-	private JDatePanelImpl datePanel;
-	
 	public UserInterfaceAddVehicle() {
 		setTitle("Добавете превозно средство");
 		setSize(600, 450);
@@ -90,19 +80,7 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		this.panel = new JPanel();
 		panel.setLayout(null);
 		this.getContentPane().add(panel);
-		
-		//
 
-		p = new Properties();
-		p.put("text.today", "Today");
-		p.put("text.month", "Month");
-		p.put("text.year", "Year");
-		dateModel = new UtilDateModel();
-		datePanel = new JDatePanelImpl(dateModel, p);
-		datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		panel.add(datePicker);
-		//
-		
 		this.labelTypeVehicle.setBounds(20, 20, 150, 30);
 		panel.add(labelTypeVehicle);
 		
@@ -174,6 +152,10 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
                 			"Надвишен брой символи", JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
+				
+				if(Character.isLowerCase(e.getKeyChar())) {
+					e.setKeyChar(Character.toUpperCase(e.getKeyChar()));
+				}
 			}
 			
 			public void keyPressed(KeyEvent e) {
@@ -206,17 +188,20 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			        e.consume();
 			    }
  
-                if (textFieldYearVehicle.getText().length() == 4) {  
+                if (textFieldYearVehicle.getText().length() > 4) {  
                 	textFieldYearVehicle.requestFocus();
-                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината трябва да е с 4 цифри!",
-                			"Невалидна година", JOptionPane.WARNING_MESSAGE);
-                        e.consume();// ignore event  
+//                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Годината трябва да е с 4 цифри!",
+//                			"Невалидна година", JOptionPane.WARNING_MESSAGE);
+                      e.consume();// ignore event  
                 }
 			}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_ENTER) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+					textFieldKM.requestFocus();
+				}
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 					textFieldKM.requestFocus();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -260,10 +245,10 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 			        e.consume();
 			    }
  
-                if (textFieldKM.getText().length() == 6) {  
+                if (textFieldKM.getText().length() > 6) {  
                 	textFieldKM.requestFocus();
-                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Kилометражът не може да надвишава 6 цифри!",
-                			"Невалидно въведен километраж", JOptionPane.WARNING_MESSAGE);
+//                	JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Kилометражът не може да надвишава 6 цифри!",
+//                			"Невалидно въведен километраж", JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
 			}
@@ -328,41 +313,7 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 		panel.add(comboBoxYears);
 		
 		this.buttonCreate.setBounds(400, 20, 100, 30);
-		panel.add(buttonCreate);
-		
-		this.buttonUpdate.setBounds(400, 60, 100, 30);
-		panel.add(buttonUpdate);
-		
-		this.buttonDelete.setBounds(400, 100, 100, 30);
-		panel.add(buttonDelete);
-		
-		this.buttonSearch.setBounds(400, 140, 100, 30);
-		panel.add(buttonSearch);
-		
-		this.buttonReset.setBounds(400, 180, 100, 30);
-		panel.add(buttonReset);
-		
-		this.buttonViewTable.setBounds(400, 220, 100, 30);
-		panel.add(buttonViewTable);
-		
-		this.buttonExit.setBounds(400, 260, 100, 30);
-		panel.add(buttonExit);
-		
-		buttonCreate.addActionListener(this);
-		buttonUpdate.addActionListener(this);
-		buttonDelete.addActionListener(this);
-		buttonSearch.addActionListener(this);
-		buttonViewTable.addActionListener(this);
-		buttonExit.addActionListener(this);
-		buttonReset.addActionListener(this);
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		buttonCreate.addActionListener(new ActionListener() {	
+		ActionListener buttonCreateListener = new ActionListener() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -388,17 +339,21 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 					} else {
 						vehicle.insert(addVehicle);
 						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е добавено!",
-								"Добавено",JOptionPane.OK_OPTION);
+								"Добавено",JOptionPane.INFORMATION_MESSAGE);
 					}
 				}catch(VehicleErrorException exc){
-					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exc.getMessage());
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exc.getMessage(),
+							"Грешка при добавяне", JOptionPane.ERROR_MESSAGE);
 				} catch(NumberFormatException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Попълнете празните полета!");
 				}
 			}
-		});
+		};
+		buttonCreate.addActionListener(buttonCreateListener);
+		panel.add(buttonCreate);
 		
-		buttonUpdate.addActionListener(new ActionListener() {
+		this.buttonUpdate.setBounds(400, 60, 100, 30);
+		ActionListener buttonUpdateListener = new ActionListener() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -422,31 +377,39 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 					} else {
 						vehicle.update(updateVehicle);
 						JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е променено!",
-								"Промяна", JOptionPane.OK_OPTION);
+								"Промяна", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}catch (VehicleErrorException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage());
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage(),
+							"Грешка при промяна", JOptionPane.ERROR_MESSAGE);
 				} catch(NumberFormatException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Попълнете празните полета!",
 							"Липсваща информация", JOptionPane.WARNING_MESSAGE);
 				}
 			}
-		});
+		};
+		buttonUpdate.addActionListener(buttonUpdateListener);
+		panel.add(buttonUpdate);
 		
-		buttonDelete.addActionListener(new ActionListener() {
+		this.buttonDelete.setBounds(400, 100, 100, 30);
+		ActionListener buttonDeleteListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
 					vehicle.delete(textFieldRegNumber.getText());
-					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е изтрито!",
-							"Изтриване", JOptionPane.OK_OPTION);
+//					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, "Превозното средство е изтрито!",
+//							"Изтриване", JOptionPane.OK_OPTION);
 				} catch (VehicleErrorException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage());
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage(),
+							"Грешка при изтриване", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
+		};
+		buttonDelete.addActionListener(buttonDeleteListener);
+		panel.add(buttonDelete);
 		
-		buttonSearch.addActionListener(new ActionListener() {
+		this.buttonSearch.setBounds(400, 140, 100, 30);
+		ActionListener buttonSearchListener = new ActionListener() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -463,19 +426,16 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 					comboBoxYears.setSelectedItem(v.getLastRerair().getYear()+1900);
 					textFieldLicense.setText(v.getDriverLicense());
 				} catch (VehicleErrorException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage());
+					JOptionPane.showMessageDialog(UserInterfaceAddVehicle.this, exp.getMessage(),
+							"Грешка при търсене", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
+		};
+		buttonSearch.addActionListener(buttonSearchListener);
+		panel.add(buttonSearch);
 		
-		buttonViewTable.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new CreateTableVehicles().setVisible(true);
-			}
-		});
-		
-		buttonReset.addActionListener(new ActionListener() {
+		this.buttonReset.setBounds(400, 180, 100, 30);
+		ActionListener buttonResenListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				comboBoxTypeVehicle.setSelectedItem(1);
@@ -489,14 +449,31 @@ public class UserInterfaceAddVehicle extends JFrame implements Runnable, ActionL
 				comboBoxMonths.setSelectedItem(1);
 				comboBoxYears.setSelectedItem(1);
 			}
-		});
-		buttonExit.addActionListener(new ActionListener() {
+		};
+		buttonReset.addActionListener(buttonResenListener);
+		panel.add(buttonReset);
+		
+		this.buttonViewTable.setBounds(400, 220, 100, 30);
+		ActionListener buttonTableListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new CreateTableVehicles();
+			}
+		};
+		buttonViewTable.addActionListener(buttonTableListener);
+		panel.add(buttonViewTable);
+		
+		this.buttonExit.setBounds(400, 260, 100, 30);
+		ActionListener buttonExitListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				new UserInterface().setVisible(true);
 			}
-		});
+		};
+		buttonExit.addActionListener(buttonExitListener);
+		panel.add(buttonExit);
 	}
 
 	/* (non-Javadoc)

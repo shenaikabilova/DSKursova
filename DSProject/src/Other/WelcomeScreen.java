@@ -24,7 +24,7 @@ import ShenaiKabilova.UserInterface;
  *
  */
 @SuppressWarnings("serial")
-public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
+public class WelcomeScreen extends JFrame implements Runnable{
 	private JPanel panel;
 	
 	private JLabel labelUsername = new JLabel("Потребител:");
@@ -37,7 +37,7 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 	private JButton buttonExit = new JButton("Край");
 	
 	public WelcomeScreen() {
-		setTitle("Admin panel");
+		setTitle("Добре дошли");
 		setSize(300, 300);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -62,8 +62,8 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 			        e.consume();
 			    }
  
-                if (textFieldUsername.getText().length() == 10) {  
-                	JOptionPane.showMessageDialog(WelcomeScreen.this, "Максимален брой символи при потребителско име: 10!", "Надвишен брой символи",
+                if (textFieldUsername.getText().length() > 15) {  
+                	JOptionPane.showMessageDialog(WelcomeScreen.this, "Максимален брой символи при потребителско име: 15!", "Надвишен брой символи",
                 			JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
@@ -86,26 +86,18 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
                 			"Надвишен брой символи", JOptionPane.WARNING_MESSAGE);
                         e.consume();// ignore event  
                 }
+			}    
+			 
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_UP) {
+					textFieldUsername.requestFocus();
+				}
 			}
 		});
 		panel.add(password);
 		
 		this.buttonEnter.setBounds(40, 100, 80, 30);
-		panel.add(buttonEnter);
-		
-		this.buttonExit.setBounds(150, 100, 80, 30);
-		panel.add(buttonExit);
-
-		buttonEnter.addActionListener(this);
-		buttonExit.addActionListener(this);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		buttonEnter.addActionListener(new ActionListener() {
+		ActionListener buttonEnterListener = new ActionListener() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -131,16 +123,21 @@ public class WelcomeScreen extends JFrame implements Runnable, ActionListener{
 							"Грешно потребителско име или парола", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
+		};
+		buttonEnter.addActionListener(buttonEnterListener);
+		panel.add(buttonEnter);
 		
-		buttonExit.addActionListener(new ActionListener() {
+		this.buttonExit.setBounds(150, 100, 80, 30);
+		ActionListener buttonExitListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
-		});
+		};
+		buttonExit.addActionListener(buttonExitListener);
+		panel.add(buttonExit);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */

@@ -26,10 +26,16 @@ public class CreateTableTripsReport extends JFrame implements Runnable, ActionLi
 		AbstractTableModel tableModel = new TableModelTripsReport(trips);
 		tableTrip = new JTable(tableModel);
 		
-		frame.setSize(800, 500);
+		frame.setSize(1000, 500);
 		frame.setLocationRelativeTo(null);
 		frame.add(new JScrollPane(tableTrip));
 		frame.setVisible(true);
+		frame.setResizable(false);
+		
+		tableTrip.getColumnModel().getColumn(0).setPreferredWidth(20);
+		tableTrip.getColumnModel().getColumn(3).setPreferredWidth(20);
+		tableTrip.getColumnModel().getColumn(4).setPreferredWidth(40);
+		tableTrip.getColumnModel().getColumn(8).setPreferredWidth(20);
 	}
 	
 	/* (non-Javadoc)

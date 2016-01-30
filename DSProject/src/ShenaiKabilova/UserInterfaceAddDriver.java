@@ -28,7 +28,7 @@ import Other.Validate;
  *
  */
 @SuppressWarnings("serial")
-public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionListener {
+public class UserInterfaceAddDriver extends JFrame implements Runnable{
 	private JPanel panel;
 	
 	private JLabel labelFirstName = new JLabel("Име: ");
@@ -180,6 +180,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		
 		this.textFieldPassword.setBounds(100, 110, 150, 25);
 		textFieldPassword.addFocusListener(new FocusAdapter() {
+			@SuppressWarnings("deprecation")
 			public void focusLost(FocusEvent arg0) {
 				if(textFieldPassword.getText().length() < 4) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Паролата не може да е по-малко от 4 символа!",
@@ -188,6 +189,7 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 			}
 		});
 		textFieldPassword.addKeyListener(new KeyAdapter() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void keyTyped(KeyEvent e) {
 			    if (textFieldPassword.getText().length() == 8) {  
@@ -245,41 +247,8 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 		panel.add(textFieldEgn);
 		
 		this.buttonInsert.setBounds(280, 20, 100, 30);
-		panel.add(buttonInsert);
-		
-		this.buttonUpdate.setBounds(280, 60, 100, 30);
-		panel.add(buttonUpdate);
-		
-		this.buttonDelete.setBounds(280, 100, 100, 30);
-		panel.add(buttonDelete);
-		
-		this.buttonSearch.setBounds(280, 140, 100, 30);
-		panel.add(buttonSearch);
-		
-		this.buttonReset.setBounds(280, 180, 100, 30);
-		panel.add(buttonReset);
-		
-		this.buttonViewTable.setBounds(280, 220, 100, 30);
-		panel.add(buttonViewTable);
-		
-		this.buttonExit.setBounds(280, 260, 100, 30);
-		panel.add(buttonExit);
-		
-		buttonInsert.addActionListener(this);
-		buttonUpdate.addActionListener(this);
-		buttonDelete.addActionListener(this);
-		buttonSearch.addActionListener(this);
-		buttonViewTable.addActionListener(this);
-		buttonExit.addActionListener(this);
-		buttonReset.addActionListener(this);
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		buttonInsert.addActionListener(new ActionListener() {
+		ActionListener buttonInsertListener = new ActionListener() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -294,19 +263,24 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 					
 					driver.insert(addDriver);
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е добавен!",
-							"Добавяне", JOptionPane.OK_OPTION);
+							"Добавяне", JOptionPane.INFORMATION_MESSAGE);
 				}catch (DriverErrorException e1) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
 				} catch (NumberFormatException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Попълнете празните полета!",
 							"Липсващи данни", JOptionPane.WARNING_MESSAGE);
 				}catch (Exception e1) {
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage(),
+							"Грешка при добавяне", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
+		};
+		buttonInsert.addActionListener(buttonInsertListener);
+		panel.add(buttonInsert);
 		
-		buttonUpdate.addActionListener(new ActionListener() {
+		this.buttonUpdate.setBounds(280, 60, 100, 30);
+		ActionListener buttonUpdateListener = new ActionListener() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
@@ -318,37 +292,38 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 					driver.update(updateDriver);
 				
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е променен!",
-							"Промяна", JOptionPane.OK_OPTION);
+							"Промяна", JOptionPane.INFORMATION_MESSAGE);
 				} catch (DriverErrorException e1) {
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage(),
+							"Грешка при промяна", JOptionPane.ERROR_MESSAGE);
 				} catch (NumberFormatException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Попълнете празните полета!",
 							"Липсващи данни", JOptionPane.WARNING_MESSAGE);
 				}
 			}
-		});
+		};
+		buttonUpdate.addActionListener(buttonUpdateListener);
+		panel.add(buttonUpdate);
 		
-		buttonDelete.addActionListener(new ActionListener() {
+		this.buttonDelete.setBounds(280, 100, 100, 30);
+		ActionListener buttonDeleteListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
 					driver.delete(textFieldEgn.getText());
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е изтрит!",
-							"Изтриване", JOptionPane.OK_OPTION);
+//					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, "Шофьорът е изтрит!",
+//							"Изтриване", JOptionPane.OK_OPTION);
 				} catch(DriverErrorException e1) {
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage());
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, e1.getMessage(),
+							"Грешка при изтриване", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
+		};
+		buttonDelete.addActionListener(buttonDeleteListener);
+		panel.add(buttonDelete);
 		
-		buttonViewTable.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new CreateTableDrivers().setVisible(true);
-			}
-		});
-		
-		buttonSearch.addActionListener(new ActionListener() {
+		this.buttonSearch.setBounds(280, 140, 100, 30);
+		ActionListener buttonSearchListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
@@ -359,12 +334,16 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 					comboBoxLicense.setSelectedItem(d.getDriverLicense());
 					textFieldPassword.setText(d.getPassword());
 				} catch (DriverErrorException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, exp.getMessage());
+					JOptionPane.showMessageDialog(UserInterfaceAddDriver.this, exp.getMessage(),
+							"Грешка при търсене", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
+		};
+		buttonSearch.addActionListener(buttonSearchListener);
+		panel.add(buttonSearch);
 		
-		buttonReset.addActionListener(new ActionListener() {
+		this.buttonReset.setBounds(280, 180, 100, 30);
+		ActionListener buttonResetListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				textFieldFirstName.setText("");
@@ -373,15 +352,30 @@ public class UserInterfaceAddDriver extends JFrame implements Runnable, ActionLi
 				textFieldPassword.setText("");
 				textFieldEgn.setText("");
 			}
-		});
+		};
+		buttonReset.addActionListener(buttonResetListener);
+		panel.add(buttonReset);
 		
-		buttonExit.addActionListener(new ActionListener() {
+		this.buttonViewTable.setBounds(280, 220, 100, 30);
+		ActionListener buttonViewTableListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new CreateTableDrivers();
+			}
+		};
+		buttonViewTable.addActionListener(buttonViewTableListener);
+		panel.add(buttonViewTable);
+		
+		this.buttonExit.setBounds(280, 260, 100, 30);
+		ActionListener buttonExitListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				new UserInterface().setVisible(true);
 			}
-		});
+		};
+		buttonExit.addActionListener(buttonExitListener);
+		panel.add(buttonExit);
 	}
 
 	/* (non-Javadoc)

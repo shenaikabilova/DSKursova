@@ -30,7 +30,7 @@ import ShenaiKabilova.VehicleDaoImpl;
  *
  */
 @SuppressWarnings("serial")
-public class UserInterfaceTrips extends JFrame implements Runnable, ActionListener{
+public class UserInterfaceTrips extends JFrame implements Runnable{
 	private JPanel panel;
 	
 	private JLabel labelRegNumber = new JLabel("Регистрационен N:");
@@ -171,7 +171,7 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 			}
 				
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_ENTER) {
 					textFieldTripID.requestFocus();
 				}
 				if(e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -285,41 +285,7 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 		panel.add(comboBoxEndMinute);
 		
 		this.buttonAdd.setBounds(500, 20, 100, 30);
-		panel.add(buttonAdd);
-		
-		this.buttonUpdate.setBounds(500, 60, 100, 30);
-		panel.add(buttonUpdate);
-		
-		this.buttonDelete.setBounds(500, 100, 100, 30);
-		panel.add(buttonDelete);
-		
-		this.buttonSearch.setBounds(500, 140, 100, 30);
-		panel.add(buttonSearch);
-		
-		this.buttonViewTrips.setBounds(500, 180, 100, 30);
-		panel.add(buttonViewTrips);
-		
-		this.buttonReset.setBounds(500, 220, 100, 30);
-		panel.add(buttonReset);
-		
-		this.buttonExit.setBounds(500, 260, 100, 30);
-		panel.add(buttonExit);
-		
-		buttonAdd.addActionListener(this);
-		buttonUpdate.addActionListener(this);
-		buttonDelete.addActionListener(this);
-		buttonSearch.addActionListener(this);
-		buttonViewTrips.addActionListener(this);
-		buttonReset.addActionListener(this);
-		buttonExit.addActionListener(this);
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		buttonAdd.addActionListener(new ActionListener() {
+		ActionListener buttonAddListener = new ActionListener() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -347,17 +313,21 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 															Long.parseLong(textFieldKM.getText()));
 					newTrip.insert(trip);
 					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е добавено!", 
-							"Добавяне", JOptionPane.OK_OPTION);
+							"Добавяне", JOptionPane.INFORMATION_MESSAGE);
 				} catch (TripsException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage(),
+							"Грешка при добавяне", JOptionPane.ERROR_MESSAGE);
 				} catch (NumberFormatException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Попълни празните полета!",
 							"Липсваща информация", JOptionPane.WARNING_MESSAGE);
 				}
 			}
-		});
+		};
+		buttonAdd.addActionListener(buttonAddListener);
+		panel.add(buttonAdd);
 		
-		buttonUpdate.addActionListener(new ActionListener() {
+		this.buttonUpdate.setBounds(500, 60, 100, 30);
+		ActionListener buttonUpdateListener = new ActionListener() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -386,30 +356,38 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 					
 					newTrip.update(trip);
 					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е променено!",
-							"Промяна", JOptionPane.OK_OPTION);
+							"Промяна", JOptionPane.INFORMATION_MESSAGE);
 				} catch (TripsException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage(), 
+							"Грешка при промяна", JOptionPane.ERROR_MESSAGE );
 				} catch (NumberFormatException exp) {
 					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Попълни празните полета!",
 							"Липсваща информация", JOptionPane.WARNING_MESSAGE);
 				}
 			}
-		});
+		};
+		buttonUpdate.addActionListener(buttonUpdateListener);
+		panel.add(buttonUpdate);
 		
-		buttonDelete.addActionListener(new ActionListener() {
+		this.buttonDelete.setBounds(500, 100, 100, 30);
+		ActionListener buttonDeleteListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
 					newTrip.delete(Integer.parseInt(textFieldTripID.getText()));
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е изтрито!",
-							"Изтриване", JOptionPane.OK_OPTION);
+//					JOptionPane.showMessageDialog(UserInterfaceTrips.this, "Пътуването е изтрито!",
+//							"Изтриване", JOptionPane.OK_OPTION);
 				} catch(TripsException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage(),
+							"Грешка при изтриване", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
+		};
+		buttonDelete.addActionListener(buttonDeleteListener);
+		panel.add(buttonDelete);
 		
-		buttonSearch.addActionListener(new ActionListener() {
+		this.buttonSearch.setBounds(500, 140, 100, 30);
+		ActionListener buttonSearchListener = new ActionListener() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -435,30 +413,37 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 					comboBoxEndHour.setSelectedItem(trip.getEndDate().getHours());
 					comboBoxEndMinute.setSelectedItem(trip.getEndDate().getMinutes());
 				} catch(TripsException exp) {
-					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage());
+					JOptionPane.showMessageDialog(UserInterfaceTrips.this, exp.getMessage(),
+							"Грешка при търсене", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
+		};
+		buttonSearch.addActionListener(buttonSearchListener);
+		panel.add(buttonSearch);
 		
-		buttonViewTrips.addActionListener(new ActionListener() {
+		this.buttonViewTrips.setBounds(500, 180, 100, 30);
+		ActionListener buttonViewTripsListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String buttons[] = {"Изведи за един", "Изведи всички"};
 				
 				int response = JOptionPane.showOptionDialog(UserInterfaceTrips.this, "Направи отчет за един или за всички?", "Избор", 
-						JOptionPane.OK_OPTION, 0, null, buttons, buttons.length);
+						JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE, null, buttons, buttons.length);
 				
 			
 				if(response == JOptionPane.OK_OPTION) {
-					new CreateTableTripsReport().setVisible(true);
+					new CreateTableTripsReport();
 				}
 				else {
-					new CreateTableTrips().setVisible(true);
+					new CreateTableTrips();
 				}
 			}
-		});
+		};
+		buttonViewTrips.addActionListener(buttonViewTripsListener);
+		panel.add(buttonViewTrips);
 		
-		buttonReset.addActionListener(new ActionListener() {
+		this.buttonReset.setBounds(500, 220, 100, 30);
+		ActionListener buttonResetListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				comboBoxRegNumber.setSelectedItem(1);
@@ -475,15 +460,20 @@ public class UserInterfaceTrips extends JFrame implements Runnable, ActionListen
 				comboBoxEndHour.setSelectedItem(1);
 				comboBoxEndMinute.setSelectedItem(1);
 			}
-		});
+		};
+		buttonReset.addActionListener(buttonResetListener);
+		panel.add(buttonReset);
 		
-		buttonExit.addActionListener(new ActionListener() {
+		this.buttonExit.setBounds(500, 260, 100, 30);
+		ActionListener buttonExitListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				new WelcomeScreen().setVisible(true);
 			}
-		});
+		};
+		buttonExit.addActionListener(buttonExitListener);
+		panel.add(buttonExit);
 	}
 
 	/* (non-Javadoc)

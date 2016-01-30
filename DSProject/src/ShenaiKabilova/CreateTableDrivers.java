@@ -30,6 +30,7 @@ public class CreateTableDrivers extends JFrame implements Runnable, ActionListen
 		frame.setLocationRelativeTo(null);
 		frame.add(new JScrollPane(tableDrivers));
 		frame.setVisible(true);
+		frame.setResizable(false);
 	}
 	
 	/* (non-Javadoc)

@@ -14,7 +14,7 @@ import javax.swing.table.AbstractTableModel;
 @SuppressWarnings("serial")
 public class TableModelVehicles extends AbstractTableModel {
 	private Object[][] tableVehicles;
-	private String[] columnNameVehicles = {"Вид превозно средство", "Регистрационен №", "Година", 
+	private String[] columnNameVehicles = {"Превозно средство", "Регистрационен №", "Година", 
 										   "Брой места", "Км", "Брой ремонти", "Последен ремонт", "Категория"};
 	
 	public TableModelVehicles (VehicleDAO dao) {

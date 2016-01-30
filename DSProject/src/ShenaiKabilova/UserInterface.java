@@ -15,12 +15,12 @@ import Other.WelcomeScreen;
  */
 
 @SuppressWarnings("serial")
-public class UserInterface extends JFrame implements Runnable, ActionListener{
+public class UserInterface extends JFrame implements Runnable{
 	private JPanel panel;
 	
 	private JButton buttonAddVehice = new JButton("Добави превозно средство");
 	private JButton buttonAddDriver = new JButton("Добави шофьор");
-	private JButton buttonExit = new JButton("Изход");
+	private JButton buttonExit = new JButton("Край");
 	
 	public UserInterface() {
 		setTitle("Админ");
@@ -34,48 +34,37 @@ public class UserInterface extends JFrame implements Runnable, ActionListener{
 		this.getContentPane().add(panel);
 		
 		this.buttonAddVehice.setBounds(50, 30, 200, 45);
-		panel.add(buttonAddVehice);
-		
-		this.buttonAddDriver.setBounds(50, 90, 200, 45);
-		panel.add(buttonAddDriver);
-		
-		this.buttonExit.setBounds(50, 150, 200, 45);
-		panel.add(buttonExit);
-		
-		buttonAddVehice.addActionListener(this);
-		buttonAddDriver.addActionListener(this);
-		buttonExit.addActionListener(this);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		
-		buttonAddVehice.addActionListener(new ActionListener() {
+		ActionListener buttonAddVehicleListener = new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				dispose();
 				new UserInterfaceAddVehicle().setVisible(true);
 			}
-		});
+		};
+		buttonAddVehice.addActionListener(buttonAddVehicleListener);
+		panel.add(buttonAddVehice);
 		
-		buttonAddDriver.addActionListener(new ActionListener() {
+		this.buttonAddDriver.setBounds(50, 90, 200, 45);
+		ActionListener buttonAddDriverVehicle = new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				dispose();
 				new UserInterfaceAddDriver().setVisible(true);
 			}
-		});
+		};
+		buttonAddDriver.addActionListener(buttonAddDriverVehicle);
+		panel.add(buttonAddDriver);
 		
-		buttonExit.addActionListener(new ActionListener() {
+		this.buttonExit.setBounds(50, 150, 200, 45);
+		ActionListener buttonExitListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				new WelcomeScreen().setVisible(true);;
 			}
-		});
+		};
+		buttonExit.addActionListener(buttonExitListener);
+		panel.add(buttonExit);
 	}
 
 	/* (non-Javadoc)
